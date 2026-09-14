@@ -24,7 +24,7 @@ void main() {
 
     expect(find.text('Pagar'), findsOneWidget);
     expect(find.text('Monto'), findsOneWidget);
-    expect(find.text('Método de pago'), findsOneWidget);
+    expect(find.text('Método de pago'), findsNothing);
   });
 
   testWidgets('Clave incorrecta no abre Home', (WidgetTester tester) async {

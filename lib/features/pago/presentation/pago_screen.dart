@@ -43,9 +43,9 @@ class PagoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final titulo = _aprobado ? 'Pago aprobado' : 'Orden creada';
     final sub = _aprobado
-        ? 'Tilopay respondió el cobro. Estado en BD: $estado.'
-        : 'ORDS creó la orden y el token. Falta el WebView (paso 2) '
-            'para cargar la tarjeta en el SDK.';
+        ? 'Tilopay aprobó el cobro. En BD el estado es $estado '
+            '(HMAC pendiente si dice PENDIENTE_HASH).'
+        : 'Todavía no hay code=1 de Tilopay.';
 
     return Scaffold(
       appBar: AppBar(
@@ -114,7 +114,8 @@ class PagoScreen extends StatelessWidget {
                 ),
                 _row('Monto', '₡ $monto'),
                 _row('Orden', orderNumber ?? '—'),
-                if (token != null && token!.isNotEmpty) _tokenBlock(context),
+                if (!_aprobado && token != null && token!.isNotEmpty)
+                  _tokenBlock(context),
                 if (authCode != null) _row('Autorización', authCode!),
                 if (code != null) _row('Código', code!),
                 if (descripcion != null) _row('Descripción', descripcion!),

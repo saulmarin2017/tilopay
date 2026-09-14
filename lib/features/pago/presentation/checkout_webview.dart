@@ -11,7 +11,6 @@ import '../../../data/api/pay_models.dart';
 import 'pago_screen.dart';
 
 /// Camino B: HTML + sdk_tpay en WebView. PAN no pasa por Dart.
-/// El GET a `/callback` **sí** debe llegar a APEX (procesar_callback).
 class CheckoutWebView extends StatefulWidget {
   const CheckoutWebView({
     super.key,
@@ -42,6 +41,7 @@ class _CheckoutWebViewState extends State<CheckoutWebView> {
   WebViewController? _controller;
   var _closing = false;
   var _loading = true;
+  var _closingUi = false;
 
   @override
   void initState() {
@@ -76,14 +76,20 @@ class _CheckoutWebViewState extends State<CheckoutWebView> {
       ..setBackgroundColor(const Color(0xFFF5F7FA))
       ..setNavigationDelegate(
         NavigationDelegate(
-          onPageStarted: (_) {
+          onPageStarted: (url) {
             if (mounted) setState(() => _loading = true);
+            _maybeCallback(url);
           },
           onPageFinished: (url) {
             if (mounted) setState(() => _loading = false);
-            if (_isCallback(url)) _onCallback(url);
+            _maybeCallback(url);
+          },
+          onUrlChange: (change) {
+            final url = change.url;
+            if (url != null) _maybeCallback(url);
           },
           onNavigationRequest: (req) {
+            _maybeCallback(req.url);
             return NavigationDecision.navigate;
           },
         ),
@@ -103,21 +109,60 @@ class _CheckoutWebViewState extends State<CheckoutWebView> {
   bool _isCallback(String url) {
     final u = Uri.tryParse(url);
     if (u == null) return false;
-    return u.path.toLowerCase().contains('/callback');
+    final path = u.path.toLowerCase();
+    if (path.contains('callback')) return true;
+    final code = u.queryParameters['code'];
+    final order = u.queryParameters['order'];
+    if (order != null &&
+        order == widget.orderNumber &&
+        code != null &&
+        code.isNotEmpty) {
+      return true;
+    }
+    return false;
+  }
+
+  void _maybeCallback(String url) {
+    debugPrint('tilopay webview url=$url');
+    if (_isCallback(url)) _onCallback(url);
   }
 
   Future<void> _onCallback(String url) async {
     if (_closing) return;
     _closing = true;
+    if (mounted) setState(() => _closingUi = true);
+
     final u = Uri.tryParse(url);
     final order = u?.queryParameters['order'] ?? widget.orderNumber;
     final code = u?.queryParameters['code'];
     final auth = u?.queryParameters['auth'];
+    final desc = u?.queryParameters['description'] ??
+        u?.queryParameters['desc'];
+
+    await Future<void>.delayed(const Duration(milliseconds: 700));
+
     PayOrden? remote;
-    try {
-      remote = await PayApi().orden(order);
-    } catch (_) {}
+    for (var i = 0; i < 5; i++) {
+      try {
+        remote = await PayApi().orden(order);
+        final est = remote.estado ?? '';
+        if (est == 'PENDIENTE_HASH' ||
+            est == 'PAGADO' ||
+            est == 'RECHAZADO' ||
+            (remote.code != null && remote.code!.isNotEmpty)) {
+          break;
+        }
+      } catch (_) {}
+      await Future<void>.delayed(const Duration(milliseconds: 500));
+    }
+
     if (!mounted) return;
+
+    final resolvedCode = remote?.code ?? code;
+    final aprobado = resolvedCode == '1';
+    var estado = remote?.estado ?? 'PENDIENTE';
+    if (aprobado && estado == 'PENDIENTE') estado = 'PENDIENTE_HASH';
+
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (_) => PagoScreen(
@@ -126,11 +171,12 @@ class _CheckoutWebViewState extends State<CheckoutWebView> {
           nombre: widget.nombre,
           apellido: widget.apellido,
           orderNumber: remote?.orderNumber ?? order,
-          estado: remote?.estado ??
-              (code == '1' ? 'PENDIENTE_HASH' : 'PENDIENTE'),
+          estado: estado,
           authCode: remote?.authCode ?? auth,
-          code: remote?.code ?? code,
-          descripcion: code == '1' ? 'Transaction is approved' : null,
+          code: resolvedCode,
+          descripcion: desc ??
+              (aprobado ? 'Transaction is approved' : remote?.error),
+          marca: remote?.tilopayId,
         ),
       ),
     );
@@ -149,6 +195,20 @@ class _CheckoutWebViewState extends State<CheckoutWebView> {
               children: [
                 WebViewWidget(controller: c),
                 if (_loading) const LinearProgressIndicator(minHeight: 2),
+                if (_closingUi)
+                  const ColoredBox(
+                    color: Color(0xCCFFFFFF),
+                    child: Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          CircularProgressIndicator(),
+                          SizedBox(height: 12),
+                          Text('Procesando resultado…'),
+                        ],
+                      ),
+                    ),
+                  ),
               ],
             ),
     );
