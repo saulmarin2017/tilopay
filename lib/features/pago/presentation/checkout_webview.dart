@@ -139,12 +139,15 @@ class _CheckoutWebViewState extends State<CheckoutWebView> {
     final desc = u?.queryParameters['description'] ??
         u?.queryParameters['desc'];
 
-    await Future<void>.delayed(const Duration(milliseconds: 700));
+    final api = PayApi();
+    try {
+      await api.retorno(url);
+    } catch (_) {}
 
     PayOrden? remote;
-    for (var i = 0; i < 5; i++) {
+    for (var i = 0; i < 6; i++) {
       try {
-        remote = await PayApi().orden(order);
+        remote = await api.orden(order);
         final est = remote.estado ?? '';
         if (est == 'PENDIENTE_HASH' ||
             est == 'PAGADO' ||
@@ -153,15 +156,13 @@ class _CheckoutWebViewState extends State<CheckoutWebView> {
           break;
         }
       } catch (_) {}
-      await Future<void>.delayed(const Duration(milliseconds: 500));
+      await Future<void>.delayed(const Duration(milliseconds: 400));
     }
 
     if (!mounted) return;
 
     final resolvedCode = remote?.code ?? code;
-    final aprobado = resolvedCode == '1';
-    var estado = remote?.estado ?? 'PENDIENTE';
-    if (aprobado && estado == 'PENDIENTE') estado = 'PENDIENTE_HASH';
+    final estado = remote?.estado ?? 'PENDIENTE';
 
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(

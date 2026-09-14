@@ -6,7 +6,8 @@ Contrato: [`../../ORDS_PAY.md`](../../ORDS_PAY.md).
 |---------|----------|
 | [`01_enable_schema.sql`](01_enable_schema.sql) | Solo si REST no está habilitado (APEX suele tenerlo) |
 | [`02_modulo_pay.sql`](02_modulo_pay.sql) | Alternativa: módulo `pay` en `/pay/` (no usar si ya creaste `tilopay-module`) |
-| [`03_handlers_tilopay_module.sql`](03_handlers_tilopay_module.sql) | **Este:** templates de `tilopay-module` (`/tilopay/iniciar`, `/tilopay/orden/:id`) |
+| [`03_handlers_tilopay_module.sql`](03_handlers_tilopay_module.sql) | Templates `iniciar` + `orden/:id` |
+| [`04_handler_retorno.sql`](04_handler_retorno.sql) | GET `retorno` — Flutter graba el callback |
 | `05_handler_retorno.sql` | Pendiente (paso 4) |
 
 **Correr (módulo que ya existe en SQL Workshop):** `03_handlers_tilopay_module.sql`  

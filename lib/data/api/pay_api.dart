@@ -50,6 +50,29 @@ class PayApi {
     return _parseInicio(res);
   }
 
+  /// Replica el GET de Tilopay para que `procesar_callback` corra en el servidor.
+  Future<PayOrden> retorno(String callbackUrl) async {
+    if (!hostConfigured) {
+      return const PayOrden(error: 'Falta el host ORDS en app_secrets.dart.');
+    }
+    final src = Uri.tryParse(callbackUrl);
+    final uri = Uri.parse('$_root/retorno').replace(
+      queryParameters: src?.queryParameters,
+    );
+    final res = await _client
+        .get(uri, headers: const {'Accept': 'application/json'})
+        .timeout(AppConfig.receiveTimeout);
+    try {
+      final json = jsonDecode(res.body);
+      if (json is! Map<String, dynamic>) {
+        return const PayOrden(error: 'Respuesta retorno inválida');
+      }
+      return PayOrden.fromJson(json);
+    } catch (e) {
+      return PayOrden(error: 'retorno HTTP ${res.statusCode}: $e');
+    }
+  }
+
   Future<PayOrden> orden(String orderNumber) async {
     if (!hostConfigured) {
       return const PayOrden(
