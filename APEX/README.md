@@ -17,7 +17,8 @@ Este folder es para la **capa APEX** (páginas, procesos, shared components, exp
 |-----------|--------|
 | `APEX/` | **Esta app APEX** (UI web, páginas, docs de pantallas) |
 | `docs/integracion/` | Contratos API, ORDS, modelo de datos |
-| `docs/integracion/sql/` | DDL, paquete `NS_PAY_TILOPAY`, ACL |
+| `docs/integracion/sql/` | DDL, paquete `NS_PAY_TILOPAY`, ACL, handlers ORDS |
+| `APEX/ords/` | Puntero al módulo REST `tilopay-module` (`/tilopay/`) |
 | `lib/` | App móvil Flutter |
 
 No duplicar SQL de ORDS aquí si ya vive en `docs/integracion/sql/` — enlazar.  

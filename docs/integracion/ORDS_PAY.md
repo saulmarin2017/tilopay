@@ -1,9 +1,13 @@
 # ORDS — contrato de cobro (`/pay/`)
 
-Aún **no** está desplegado. Receta de idea: [`FLUTTER.md`](FLUTTER.md).  
-Reusa `NS_PAY_TILOPAY` en WKSP_PRUEBAS. Autenticación: usuario de la app Flutter, **no** las claves Tilopay.
+Scripts: [`sql/ords/`](sql/ords/). Schema **WKSP_PRUEBAS**. Alias `pruebas`.
 
-Scripts (cuando se escriban): `sql/ords/`.
+Autenticación: usuario de la app Flutter, **no** las claves Tilopay. En sandbox el módulo va **público**.
+
+Base (módulo UI `tilopay-module`):  
+`https://g147092bf4447e7-fd95nrdce4pbvcwy.adb.sa-bogota-1.oraclecloudapps.com/ords/pruebas/tilopay`
+
+El host es el de APEX (barra del browser, sin `/r/pruebas/tilopay/...`).
 
 ## `POST /pay/iniciar`
 
@@ -30,15 +34,22 @@ Respuesta 200:
 }
 ```
 
-`redirect` que se manda a Tilopay = URL **HTTPS** de callback (friendly o ORDS), no `f?p=` ni `navasoft://`.
+`redirect` que se manda a Tilopay = `…/ords/r/pruebas/tilopay/callback` (friendly, **no** `f?p=` ni `navasoft://`).
+
+Llama `ns_pay_tilopay.iniciar` (token `loginSdk` en servidor). Flutter **no** recibe `apiuser` / `password` / `key`.
+
+Camino A: `checkoutUrl` = p.1 app 110 (hace falta sesión o página pública).  
+Camino B: Flutter usa `token` en HTML propio (paso 2).
 
 ## `GET /pay/orden/:orderNumber`
 
-Campos: `order_number`, `estado`, `monto`, `moneda`, `auth_code`, `code_cb`, `tilopay_id`.
+Campos: `orderNumber`, `estado`, `monto`, `moneda`, `authCode`, `code`, `tilopayId`.
 
 Estados: `PENDIENTE` → `PENDIENTE_HASH` o `PAGADO` / `RECHAZADO`.
 
-## `GET /pay/retorno` (callback Tilopay → servidor)
+404 si no existe.
+
+## `GET /pay/retorno` (paso 4)
 
 Leer query (`code`, `order`, `auth`, `OrderHash`, …) y `ns_pay_tilopay.procesar_callback`.  
 Opcional: 302 a `navasoft://pago?order=NS-…` **después** de procesar.

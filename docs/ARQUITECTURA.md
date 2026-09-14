@@ -15,7 +15,7 @@ Plantilla feature-first (mismo patrón de carpetas que Ordexia / Órdenes de Man
 
 ## Flujo de arranque
 
-`main.dart` → `SplashScreen` → `LoginScreen` → `HomeScreen`
+`main.dart` → `SplashScreen` → `LoginScreen` → `HomeScreen` (checkout) → `PagoScreen` (recibo demo)
 
 El cobro (cuando se arme) abre un WebView: receta [`integracion/FLUTTER.md`](integracion/FLUTTER.md).
 

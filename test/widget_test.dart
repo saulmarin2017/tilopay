@@ -19,12 +19,12 @@ void main() {
     await tester.pump(const Duration(milliseconds: 700));
     await tester.pumpAndSettle();
 
-    await tester.enterText(find.byType(TextField).at(0), 'saul.marin');
-    await tester.enterText(find.byType(TextField).at(1), '1234');
     await tester.tap(find.text('Ingresar'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Checkout Tilopay'), findsOneWidget);
+    expect(find.text('Pagar'), findsOneWidget);
+    expect(find.text('Monto'), findsOneWidget);
+    expect(find.text('Método de pago'), findsOneWidget);
   });
 
   testWidgets('Clave incorrecta no abre Home', (WidgetTester tester) async {
@@ -38,6 +38,6 @@ void main() {
     await tester.pump();
 
     expect(find.text('Usuario o contraseña incorrectos.'), findsOneWidget);
-    expect(find.text('Checkout Tilopay'), findsNothing);
+    expect(find.text('Pagar'), findsNothing);
   });
 }

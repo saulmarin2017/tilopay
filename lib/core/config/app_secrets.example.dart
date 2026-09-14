@@ -12,9 +12,10 @@
 class AppSecrets {
   AppSecrets._();
 
-  /// URL base del API (sin barra final). Módulo `/pay/` cuando exista.
+  /// URL base del API (sin barra final).
+  /// Host = el de APEX, path `/ords/pruebas/pay`.
   static const String apiBaseUrl =
-      'https://TU_HOST/ords/pruebas/pay';
+      'https://g147092bf4447e7-fd95nrdce4pbvcwy.adb.sa-bogota-1.oraclecloudapps.com/ords/pruebas/tilopay';
 
   /// Token OAuth (client_credentials), si el módulo lo pide.
   static const String oauthTokenUrl =

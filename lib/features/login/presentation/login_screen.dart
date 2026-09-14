@@ -14,8 +14,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _userCtrl = TextEditingController();
-  final _passCtrl = TextEditingController();
+  final _userCtrl = TextEditingController(text: AppConfig.mockUser);
+  final _passCtrl = TextEditingController(text: AppConfig.mockPassword);
   bool _obscure = true;
   bool _remember = false;
   String? _error;

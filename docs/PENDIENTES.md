@@ -1,7 +1,7 @@
 # Pendientes — Tilopay (Flutter)
 
 Documento de seguimiento de tareas abiertas.  
-**Última actualización:** 2026-09-14 (branding APEX Tilopay Demo en repo)
+**Última actualización:** 2026-09-14 (ORDS /pay/iniciar + /pay/orden en repo)
 
 **APEX (app web):** [`../APEX/PENDIENTES.md`](../APEX/PENDIENTES.md)  
 **Especificación APEX vs Flutter:** [`integracion/RECOMENDACIONES_APEX.md`](integracion/RECOMENDACIONES_APEX.md)
@@ -23,7 +23,7 @@ Sandbox APEX **ya cobró** (2026-09-11): orden `NS-20260911-00000034`. Este repo
 | Paso | Qué | Estado |
 |------|-----|--------|
 | 0 | Scaffold Flutter + `APEX/` (patrón Ordexia/Gridxia) | ✅ 2026-09-14 |
-| 1 | ORDS `POST /pay/iniciar` y `GET /pay/orden/:id` | Pendiente |
+| 1 | ORDS `POST /pay/iniciar` y `GET /pay/orden/:id` | **Repo listo** — falta ejecutar SQL y host en `app_secrets.dart` |
 | 2 | Flutter camino A: WebView a p.1; interceptar `/callback` | Pendiente |
 | 3 | Página APEX pública **o** camino B (HTML + token) | Pendiente |
 | 4 | ORDS `/pay/retorno` + App Link | Pendiente |
@@ -54,8 +54,8 @@ Hecho en `Innovacion/NAVASOFT/proyectos/tilopay/` y app 110:
 | ID | Tarea | Estado | Notas |
 |----|--------|--------|-------|
 | P1 | Scaffold feature-first (`core/features/shared/data/docs/APEX`) | **Hecho** | 2026-09-14 |
-| P2 | Contrato ORDS `iniciar` / `orden` | Pendiente | `docs/integracion/ORDS_PAY.md` |
-| P3 | Feature `pago` (WebView camino A) | Pendiente | `webview_flutter`; receta `integracion/FLUTTER.md` |
+| P2 | Contrato ORDS `iniciar` / `orden` | **Repo listo** | Scripts `sql/ords/02_modulo_pay.sql`. Falta correrlos + host ORDS. |
+| P3 | Feature `pago` (WebView camino A) | Parcial | UI checkout = APEX p.1. Recibo demo. Falta WebView + ORDS. |
 | P4 | `app_secrets.dart` local (host ORDS) | Pendiente | Copiar desde `app_secrets.example.dart` |
 | P13 | Repo remoto en GitHub | En curso | `saulmarin2017/tilopay` |
 

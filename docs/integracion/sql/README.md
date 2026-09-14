@@ -10,4 +10,4 @@ Correr en **WKSP_PRUEBAS** (SQL Workshop) salvo el ACL.
 
 No aplicar en DEV/PROD hasta que Saúl lo autorice.
 
-Handlers ORDS: [`ords/`](ords/).
+Handlers ORDS: [`ords/`](ords/) — `02_modulo_pay.sql` (iniciar + orden). Pendiente de ejecutar en WKSP_PRUEBAS.

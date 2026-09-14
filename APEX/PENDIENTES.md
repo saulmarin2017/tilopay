@@ -32,7 +32,7 @@ Este archivo es el **seguimiento de la app web**; no duplicar el detalle en `doc
 | **A6** | **Export de la app APEX al repo** | Pendiente | `exports/app/f110.sql` |
 | **A10** | **Ocultar token / Application Items en UI callback** | **Repo listo** | HTML `callback-region.html` + JS. Pegar en p.3; ítems `P3_*` Hidden. |
 | **A11** | **HMAC `OrderHash`** | **Bloqueado** | Sin `hmac_secreto` el estado queda `PENDIENTE_HASH` |
-| **A12** | **Página de pago pública o ORDS iniciar** | Pendiente | Hace falta para WebView Flutter (camino A/B) |
+| **A12** | **Página de pago pública o ORDS iniciar** | **Repo listo** | `docs/integracion/sql/ords/02_modulo_pay.sql`. Falta ejecutar en WKSP_PRUEBAS. |
 
 ---
 

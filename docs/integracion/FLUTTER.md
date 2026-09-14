@@ -57,7 +57,7 @@ El `redirect` que se manda a `iniciar` tiene que ser **HTTPS** que Tilopay pueda
 
 ## Paso 1 — Contrato JSON (backend)
 
-Exponer dos recursos ORDS sobre **WKSP_PRUEBAS** (o un proxy). Autenticación: el usuario de la app Flutter, **no** las claves Tilopay.
+Scripts: [`sql/ords/02_modulo_pay.sql`](sql/ords/02_modulo_pay.sql). Autenticación: el usuario de la app Flutter, **no** las claves Tilopay. Sandbox: módulo público.
 
 ### `POST /pay/iniciar`
 
