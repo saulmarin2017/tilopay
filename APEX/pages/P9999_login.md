@@ -48,7 +48,9 @@ No uses Type = **Icon** / App Icon: Universal Theme recorta el logo en un cuadra
 2. **Page Designer → CSS → Inline**.
 3. Pegá el contenido completo de **`login_tilopay.css`**.  
    **No** pegues `login_ordexia.css` ni `login_gridxia.css`.
-4. **Save** y ejecutá la app (logout si hace falta).
+4. **Save** y ejecutá la app (logout si hace falta). **Ctrl+F5**.
+
+Si el icono queda a la izquierda: volvé a pegar **todo** `login_tilopay.css` (el header de Universal Theme es flex en fila; el CSS fuerza columna y `align-items: center`).
 
 No pongas el CSS de login en el theme global: pintaría el fondo rojo en todas las páginas. El shell post-login va en `app_tilopay.css`.
 
@@ -64,7 +66,7 @@ No pongas el CSS de login en el theme global: pintaría el fondo rojo en todas l
 ### 4. Verificar
 
 - [ ] Fondo rojo en degradado (no bloque plano ni azul APEX)
-- [ ] Icono T rojo visible, no recortado
+- [ ] Icono T rojo **centrado** sobre el título (no a la izquierda)
 - [ ] Título **Tilopay Demo**
 - [ ] Botón Acceder `#ED1525`
 - [ ] Focus de inputs en rojo

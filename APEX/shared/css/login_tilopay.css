@@ -65,22 +65,36 @@ body[class*="login"],
 .t-Login-region .t-Region-headerItems,
 .t-Login-region .t-Region-headerItems--title,
 .t-Login-region .t-Region-headerItems--buttons {
-  margin: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  width: 100% !important;
+  float: none !important;
+  margin: 0 auto !important;
   padding: 0 !important;
   min-height: 0 !important;
   height: auto !important;
   max-height: none !important;
   border: none !important;
   background: transparent !important;
-  gap: 0 !important;
+  gap: 0.35rem !important;
+  grid-template-columns: 1fr !important;
 }
 
 .t-Login-logo,
 .t-Login-logo a,
-.t-Login-header .t-Login-logo {
-  display: block !important;
+.t-Login-header .t-Login-logo,
+.t-Login-region .t-Login-logo,
+.t-Login-body > .t-Login-logo,
+.t-Login-container .t-Login-logo {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
   width: 100% !important;
-  margin: 0 0 0.55rem 0 !important;
+  max-width: 100% !important;
+  margin: 0 auto 0.55rem auto !important;
   padding: 0 !important;
   min-height: 0 !important;
   height: auto !important;
@@ -89,12 +103,16 @@ body[class*="login"],
   background: transparent !important;
   border: none !important;
   overflow: visible !important;
+  float: none !important;
+  align-self: center !important;
 }
 
 .t-Login-logo img,
 .t-Login-logo a img,
 .t-Login-header img,
-.t-Login-region .t-Region-header img {
+.t-Login-region .t-Region-header img,
+.t-Login-region .t-Login-logo img,
+.t-Login-region img[src*="tilopay_icon"] {
   display: block !important;
   width: 88px !important;
   height: 88px !important;
@@ -106,6 +124,19 @@ body[class*="login"],
   background: transparent !important;
   border: none !important;
   border-radius: 22px !important;
+  float: none !important;
+}
+
+.t-Login-logo .t-Icon,
+.t-Login-logo .t-Image,
+.t-Login-logo span {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  margin: 0 auto !important;
+  width: 100% !important;
+  background: transparent !important;
+  float: none !important;
 }
 
 .t-Login-logo .a-Icon,
