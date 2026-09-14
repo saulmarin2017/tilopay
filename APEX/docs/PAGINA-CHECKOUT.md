@@ -190,7 +190,7 @@ begin
 end;
 ```
 
-`P3_ESTADO = PENDIENTE_HASH` con HMAC vacío es correcto: Tilopay ya aprobó (`code=1`).
+Tras recompilar `02-pkg-tilopay.sql` (HMAC V2), `code=1` + hash ok → `PAGADO`. Si el hash no coincide, sigue `PENDIENTE_HASH`.
 
 ---
 

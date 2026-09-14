@@ -10,6 +10,6 @@ Schema: **WKSP_PRUEBAS**. DDL: [`sql/01-tablas-pagos.sql`](sql/01-tablas-pagos.s
 
 Estados de orden: `PENDIENTE` · `PENDIENTE_HASH` · `PAGADO` · `RECHAZADO`.
 
-Sin `hmac_secreto` el paquete **no** marca `PAGADO`.
+`hash_ok` (V2 plugin Woo) marca `PAGADO` si el `OrderHash` coincide. Sin match queda `PENDIENTE_HASH`.
 
 No se guarda PAN ni CVV.

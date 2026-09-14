@@ -14,6 +14,8 @@ Origen: `Innovacion/NAVASOFT/proyectos/tilopay/sql/` (copiado a este repo).
 | [`06-utl-http-login.sql`](06-utl-http-login.sql) | SQL Commands | Diagnóstico |
 | [`07-prueba-user-Il-vs-Ii.sql`](07-prueba-user-Il-vs-Ii.sql) | SQL Commands | Diagnóstico |
 | [`08-acl-tilopay.sql`](08-acl-tilopay.sql) | Database Actions, usuario **ADMIN** | Aplicado 2026-09-11 |
+| [`09-grant-dbms-crypto.sql`](09-grant-dbms-crypto.sql) | ADMIN | HMAC OrderHash |
+| [`10-hmac-secreto.example.sql`](10-hmac-secreto.example.sql) | SQL Workshop | Opcional: secreto del correo |
 
 No aplicar en DEV/PROD hasta que Saúl lo autorice.
 

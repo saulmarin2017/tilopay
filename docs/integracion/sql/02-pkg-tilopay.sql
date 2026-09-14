@@ -9,8 +9,8 @@
   Prereq  : sql/01-tablas-pagos.sql + fila en NS_PAY_CONFIG
   Notas   : c_url_get_token se pisa con NS_PAY_CONFIG.url_get_token.
             Confirmar verb/body de GetTokenSdk en Postman antes de usar iniciar().
-            procesar_callback NO marca PAGADO si hmac_secreto está vacío
-            (deja PENDIENTE_HASH) para no aprobar pagos sin validar.
+            hash_ok: HMAC-SHA256 V2 (plugin Woo Tilopay computed_customer_hash).
+            Prereq: GRANT EXECUTE ON SYS.DBMS_CRYPTO TO WKSP_PRUEBAS (script 09).
 */
 
 create or replace package ns_pay_tilopay as
@@ -134,6 +134,20 @@ create or replace package body ns_pay_tilopay as
     return l_token;
   end get_token_sdk;
 
+  function hmac_sha256_hex (p_msg in varchar2, p_key in varchar2) return varchar2 is
+    l_mac raw(64);
+  begin
+    if p_msg is null or p_key is null then
+      return null;
+    end if;
+    l_mac := dbms_crypto.mac(
+               src => utl_i18n.string_to_raw(p_msg, 'AL32UTF8'),
+               typ => dbms_crypto.hmac_sh256,
+               key => utl_i18n.string_to_raw(p_key, 'AL32UTF8')
+             );
+    return lower(rawtohex(l_mac));
+  end hmac_sha256_hex;
+
   function hash_ok (
     p_ambiente     in varchar2,
     p_order_number in varchar2,
@@ -145,20 +159,61 @@ create or replace package body ns_pay_tilopay as
     p_email        in varchar2,
     p_order_hash   in varchar2
   ) return varchar2 is
-    l_secret ns_pay_config.hmac_secreto%type;
+    l_cfg    ns_pay_config%rowtype;
+    l_amount varchar2(40);
+    l_msg    varchar2(4000);
+    l_hex    varchar2(64);
+    l_want   varchar2(64);
   begin
-    select hmac_secreto
-      into l_secret
-      from ns_pay_config
-     where ambiente = p_ambiente;
-
-    -- Sin secreto configurado no se puede validar: el caller deja PENDIENTE_HASH.
-    if l_secret is null or p_order_hash is null or length(p_order_hash) != 64 then
+    if p_order_hash is null or length(p_order_hash) != 64 then
+      return 'N';
+    end if;
+    if p_tpt is null or p_auth is null then
       return 'N';
     end if;
 
-    -- TODO: copiar fórmula exacta del plugin / Postman (computed_customer_hash)
-    -- y comparar con hash_equals. Hasta entonces no aprobar por hash.
+    select * into l_cfg
+      from ns_pay_config
+     where ambiente = p_ambiente;
+
+    l_want   := lower(p_order_hash);
+    l_amount := trim(to_char(p_monto, 'FM9999999990.00'));
+    -- PHP http_build_query del plugin Woo (hashVersion V2).
+    l_msg :=
+      'api_Key='            || l_cfg.api_key ||
+      '&api_user='          || l_cfg.api_user ||
+      '&orderId='           || p_tpt ||
+      '&external_orden_id=' || p_order_number ||
+      '&amount='            || l_amount ||
+      '&currency='          || p_moneda ||
+      '&responseCode='      || p_code ||
+      '&auth='              || p_auth ||
+      '&email='             || replace(nvl(p_email, ''), '@', '%40');
+
+    -- Clave V2 del plugin: tpt|api_key|api_password
+    l_hex := hmac_sha256_hex(l_msg, p_tpt || '|' || l_cfg.api_key || '|' || l_cfg.api_password);
+    if l_hex = l_want then
+      return 'S';
+    end if;
+
+    -- V1 (plugin viejo): api_key|api_password
+    l_hex := hmac_sha256_hex(l_msg, l_cfg.api_key || '|' || l_cfg.api_password);
+    if l_hex = l_want then
+      return 'S';
+    end if;
+
+    -- Secreto que Tilopay mandó por correo (si está en hmac_secreto).
+    if l_cfg.hmac_secreto is not null then
+      l_hex := hmac_sha256_hex(l_msg, l_cfg.hmac_secreto);
+      if l_hex = l_want then
+        return 'S';
+      end if;
+      l_hex := hmac_sha256_hex(l_msg, p_tpt || '|' || l_cfg.hmac_secreto);
+      if l_hex = l_want then
+        return 'S';
+      end if;
+    end if;
+
     return 'N';
   end hash_ok;
 

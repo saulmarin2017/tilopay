@@ -80,7 +80,7 @@ Hecho en `Innovacion/NAVASOFT/proyectos/tilopay/` y app 110:
 
 | ID | Tarea | Bloqueo |
 |----|--------|---------|
-| P8 | Estado `PAGADO` en UI | HMAC (`hmac_secreto`) lo entrega Tilopay |
+| P8 | Estado `PAGADO` en UI | **Repo listo** — recompilar `02-pkg-tilopay.sql` + grant `09` |
 
 ---
 
