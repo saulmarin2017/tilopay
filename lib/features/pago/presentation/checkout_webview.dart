@@ -106,20 +106,23 @@ class _CheckoutWebViewState extends State<CheckoutWebView> {
     setState(() => _controller = controller);
   }
 
+  String? _q(Map<String, String> m, String key) {
+    final want = key.toLowerCase();
+    for (final e in m.entries) {
+      if (e.key.toLowerCase() == want) return e.value;
+    }
+    return null;
+  }
+
   bool _isCallback(String url) {
     final u = Uri.tryParse(url);
     if (u == null) return false;
+    final q = u.queryParameters;
+    final code = _q(q, 'code');
+    if (code == null || code.isEmpty) return false;
     final path = u.path.toLowerCase();
-    if (path.contains('callback')) return true;
-    final code = u.queryParameters['code'];
-    final order = u.queryParameters['order'];
-    if (order != null &&
-        order == widget.orderNumber &&
-        code != null &&
-        code.isNotEmpty) {
-      return true;
-    }
-    return false;
+    if (path.contains('callback') || path.contains('retorno')) return true;
+    return _q(q, 'order') == widget.orderNumber;
   }
 
   void _maybeCallback(String url) {
@@ -133,36 +136,41 @@ class _CheckoutWebViewState extends State<CheckoutWebView> {
     if (mounted) setState(() => _closingUi = true);
 
     final u = Uri.tryParse(url);
-    final order = u?.queryParameters['order'] ?? widget.orderNumber;
-    final code = u?.queryParameters['code'];
-    final auth = u?.queryParameters['auth'];
-    final desc = u?.queryParameters['description'] ??
-        u?.queryParameters['desc'];
+    final q = u?.queryParameters ?? const <String, String>{};
+    final order = _q(q, 'order') ?? widget.orderNumber;
+    final code = _q(q, 'code');
+    final auth = _q(q, 'auth');
+    final desc = _q(q, 'description') ?? _q(q, 'desc');
 
     final api = PayApi();
+    PayOrden? ret;
     try {
-      await api.retorno(url);
-    } catch (_) {}
+      ret = await api.retorno(url);
+    } catch (e) {
+      ret = PayOrden(error: '$e');
+    }
 
-    PayOrden? remote;
-    for (var i = 0; i < 6; i++) {
+    PayOrden? remote = ret;
+    for (var i = 0; i < 8; i++) {
+      final est = remote?.estado ?? '';
+      if (est == 'PENDIENTE_HASH' ||
+          est == 'PAGADO' ||
+          est == 'RECHAZADO') {
+        break;
+      }
+      await Future<void>.delayed(const Duration(milliseconds: 400));
       try {
         remote = await api.orden(order);
-        final est = remote.estado ?? '';
-        if (est == 'PENDIENTE_HASH' ||
-            est == 'PAGADO' ||
-            est == 'RECHAZADO' ||
-            (remote.code != null && remote.code!.isNotEmpty)) {
-          break;
-        }
       } catch (_) {}
-      await Future<void>.delayed(const Duration(milliseconds: 400));
     }
 
     if (!mounted) return;
 
     final resolvedCode = remote?.code ?? code;
-    final estado = remote?.estado ?? 'PENDIENTE';
+    var estado = remote?.estado ?? ret?.estado ?? 'PENDIENTE';
+    if (resolvedCode == '1' && estado == 'PENDIENTE') {
+      estado = 'PENDIENTE_HASH';
+    }
 
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
@@ -173,11 +181,14 @@ class _CheckoutWebViewState extends State<CheckoutWebView> {
           apellido: widget.apellido,
           orderNumber: remote?.orderNumber ?? order,
           estado: estado,
-          authCode: remote?.authCode ?? auth,
+          authCode: remote?.authCode ?? ret?.authCode ?? auth,
           code: resolvedCode,
           descripcion: desc ??
-              (aprobado ? 'Transaction is approved' : remote?.error),
+              (resolvedCode == '1'
+                  ? 'Transaction is approved'
+                  : remote?.error),
           marca: remote?.tilopayId,
+          retornoError: ret?.error,
         ),
       ),
     );

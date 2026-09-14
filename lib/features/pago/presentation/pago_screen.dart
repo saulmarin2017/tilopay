@@ -21,6 +21,7 @@ class PagoScreen extends StatelessWidget {
     this.code,
     this.descripcion,
     this.marca,
+    this.retornoError,
   });
 
   final String monto;
@@ -35,6 +36,7 @@ class PagoScreen extends StatelessWidget {
   final String? code;
   final String? descripcion;
   final String? marca;
+  final String? retornoError;
 
   bool get _aprobado =>
       estado == 'PAGADO' || estado == 'PENDIENTE_HASH' || code == '1';
@@ -42,10 +44,13 @@ class PagoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final titulo = _aprobado ? 'Pago aprobado' : 'Orden creada';
-    final sub = _aprobado
-        ? 'Tilopay aprobó el cobro. En BD el estado es $estado '
-            '(HMAC pendiente si dice PENDIENTE_HASH).'
-        : 'Todavía no hay code=1 de Tilopay.';
+    final sub = estado == 'PAGADO'
+        ? 'Cobro confirmado. HMAC validado. Estado en BD: PAGADO.'
+        : estado == 'PENDIENTE_HASH'
+            ? 'Tilopay aprobó. El HMAC aún no coincidió (PENDIENTE_HASH).'
+            : _aprobado
+                ? 'Tilopay aprobó el cobro. Estado en BD: $estado.'
+                : 'Todavía no hay code=1 de Tilopay.';
 
     return Scaffold(
       appBar: AppBar(
@@ -124,6 +129,8 @@ class PagoScreen extends StatelessWidget {
                   _row('Cliente', '$nombre $apellido'.trim()),
                 if (email.isNotEmpty) _row('Email', email),
                 _row('Estado', estado),
+                if (retornoError != null && retornoError!.isNotEmpty)
+                  _row('Retorno', retornoError!),
                 if (checkoutUrl != null && checkoutUrl!.isNotEmpty)
                   _row('Checkout', checkoutUrl!),
                 Padding(

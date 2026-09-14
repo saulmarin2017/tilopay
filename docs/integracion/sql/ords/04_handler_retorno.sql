@@ -20,13 +20,15 @@ BEGIN
   ORDS.DEFINE_HANDLER(
     p_module_name    => 'tilopay-module',
     p_pattern        => 'retorno',
-    p_method         => 'GET',
+    p_method         => 'POST',
     p_source_type    => 'plsql/block',
     p_items_per_page => 0,
-    p_comments       => 'GET /tilopay/retorno',
+    p_mimes_allowed  => 'application/json',
+    p_comments       => 'POST /tilopay/retorno JSON body',
     p_source         => q'[
 DECLARE
-  l_qs    VARCHAR2(4000);
+  l_json  JSON_OBJECT_T;
+  l_payload CLOB;
   l_order VARCHAR2(64);
   l_code  VARCHAR2(20);
   l_auth  VARCHAR2(40);
@@ -36,22 +38,21 @@ DECLARE
   l_crd   VARCHAR2(120);
   l_est   VARCHAR2(20);
   l_err   VARCHAR2(400);
-
-  FUNCTION qparam (p_qs VARCHAR2, p_name VARCHAR2) RETURN VARCHAR2 IS
-    l VARCHAR2(4000);
-  BEGIN
-    l := regexp_substr(p_qs, '(^|&)' || p_name || '=([^&]*)', 1, 1, 'i', 2);
-    RETURN utl_url.unescape(REPLACE(NVL(l, ''), '+', ' '));
-  END;
 BEGIN
-  l_qs    := owa_util.get_cgi_env('QUERY_STRING');
-  l_order := qparam(l_qs, 'order');
-  l_code  := qparam(l_qs, 'code');
-  l_auth  := qparam(l_qs, 'auth');
-  l_hash  := qparam(l_qs, 'OrderHash');
-  l_tpt   := NVL(qparam(l_qs, 'tpt'), qparam(l_qs, 'tilopay-transaction'));
-  l_desc  := qparam(l_qs, 'description');
-  l_crd   := qparam(l_qs, 'crd');
+  l_payload := :body_text;
+  IF l_payload IS NULL OR NVL(DBMS_LOB.getlength(l_payload), 0) = 0 THEN
+    l_json := JSON_OBJECT_T();
+  ELSE
+    l_json := JSON_OBJECT_T.parse(l_payload);
+  END IF;
+
+  l_order := NVL(l_json.get_string('order'), l_json.get_string('orderNumber'));
+  l_code  := l_json.get_string('code');
+  l_auth  := l_json.get_string('auth');
+  l_hash  := NVL(l_json.get_string('OrderHash'), l_json.get_string('orderHash'));
+  l_tpt   := NVL(l_json.get_string('tpt'), l_json.get_string('tilopay-transaction'));
+  l_desc  := l_json.get_string('description');
+  l_crd   := l_json.get_string('crd');
 
   IF l_order IS NULL THEN
     owa_util.status_line(400, 'Bad Request', FALSE);

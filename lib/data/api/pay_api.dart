@@ -55,22 +55,65 @@ class PayApi {
     if (!hostConfigured) {
       return const PayOrden(error: 'Falta el host ORDS en app_secrets.dart.');
     }
-    final src = Uri.tryParse(callbackUrl);
-    final uri = Uri.parse('$_root/retorno').replace(
-      queryParameters: src?.queryParameters,
-    );
-    final res = await _client
-        .get(uri, headers: const {'Accept': 'application/json'})
-        .timeout(AppConfig.receiveTimeout);
-    try {
-      final json = jsonDecode(res.body);
-      if (json is! Map<String, dynamic>) {
-        return const PayOrden(error: 'Respuesta retorno inválida');
+    String? qp(Map<String, String> m, String key) {
+      final want = key.toLowerCase();
+      for (final e in m.entries) {
+        if (e.key.toLowerCase() == want) return e.value;
       }
-      return PayOrden.fromJson(json);
-    } catch (e) {
-      return PayOrden(error: 'retorno HTTP ${res.statusCode}: $e');
+      return null;
     }
+
+    final src = Uri.tryParse(callbackUrl);
+    final q = src?.queryParameters ?? const <String, String>{};
+    final body = {
+      'order': qp(q, 'order'),
+      'code': qp(q, 'code'),
+      'auth': qp(q, 'auth'),
+      'OrderHash': qp(q, 'OrderHash'),
+      'tpt': qp(q, 'tpt') ?? qp(q, 'tilopay-transaction'),
+      'description': qp(q, 'description'),
+      'crd': qp(q, 'crd'),
+    };
+
+    PayOrden parsed(http.Response res) {
+      try {
+        final json = jsonDecode(res.body);
+        if (json is Map<String, dynamic>) {
+          final o = PayOrden.fromJson(json);
+          if (res.statusCode >= 400 && o.error == null) {
+            return PayOrden(error: 'HTTP ${res.statusCode}');
+          }
+          return o;
+        }
+      } catch (_) {}
+      final snip =
+          res.body.length > 180 ? res.body.substring(0, 180) : res.body;
+      return PayOrden(error: 'HTTP ${res.statusCode} $snip');
+    }
+
+    var res = await _client
+        .post(
+          Uri.parse('$_root/retorno'),
+          headers: const {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+          body: jsonEncode(body),
+        )
+        .timeout(AppConfig.receiveTimeout);
+
+    if (res.statusCode == 404 || res.statusCode == 405) {
+      res = await _client
+          .get(
+            Uri.parse('$_root/retorno').replace(queryParameters: {
+              for (final e in body.entries)
+                if (e.value != null && e.value!.isNotEmpty) e.key: e.value!,
+            }),
+            headers: const {'Accept': 'application/json'},
+          )
+          .timeout(AppConfig.receiveTimeout);
+    }
+    return parsed(res);
   }
 
   Future<PayOrden> orden(String orderNumber) async {
