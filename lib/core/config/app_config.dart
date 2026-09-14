@@ -7,7 +7,11 @@ class AppConfig {
 
   static const String appName = 'Tilopay';
 
-  static const String logoAsset = 'assets/images/logo.png';
+  static const String appTitle = 'Tilopay Demo';
+
+  static const String logoAsset = 'assets/images/tilopay_icon.png';
+
+  static const String loginTagline = 'Checkout sandbox · Navasoft';
 
   static const String brandCredit = 'By Navasoft Soluciones';
 

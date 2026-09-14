@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../../../core/config/app_config.dart';
 import '../../../core/theme/app_colors.dart';
-import '../../home/presentation/home_screen.dart';
+import '../../login/presentation/login_screen.dart';
 
-/// Pantalla de arranque. Hoy no hay sesión: pasa a Home.
+/// Arranque: mismo gradiente rojo que el login APEX, luego Login.
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -20,10 +20,10 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _bootstrap() async {
-    await Future<void>.delayed(const Duration(milliseconds: 600));
+    await Future<void>.delayed(const Duration(milliseconds: 700));
     if (!mounted) return;
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => const HomeScreen()),
+      MaterialPageRoute(builder: (_) => const LoginScreen()),
     );
   }
 
@@ -38,27 +38,37 @@ class _SplashScreenState extends State<SplashScreen> {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
+              AppColors.loginBgDeep,
+              AppColors.primaryDeeper,
               AppColors.primaryDark,
               AppColors.primary,
             ],
+            stops: [0.0, 0.28, 0.58, 1.0],
           ),
         ),
-        child: const Center(
+        child: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.payments_outlined, size: 72, color: Colors.white),
-              SizedBox(height: 16),
-              Text(
-                AppConfig.appName,
+              ClipRRect(
+                borderRadius: BorderRadius.circular(22),
+                child: Image.asset(
+                  AppConfig.logoAsset,
+                  width: 88,
+                  height: 88,
+                ),
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                AppConfig.appTitle,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 28,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
-              SizedBox(height: 8),
-              Text(
+              const SizedBox(height: 8),
+              const Text(
                 AppConfig.brandCredit,
                 style: TextStyle(color: Colors.white70),
               ),

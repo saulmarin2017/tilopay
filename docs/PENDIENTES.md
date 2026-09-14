@@ -71,7 +71,7 @@ Hecho en `Innovacion/NAVASOFT/proyectos/tilopay/` y app 110:
 
 | ID | Tarea | Estado | Notas |
 |----|--------|--------|-------|
-| P7 | Theme / branding Navasoft | Parcial | APEX Tilopay Demo listo en repo (A7/A8/A9). Flutter splash sigue azul del scaffold. |
+| P7 | Theme / branding Navasoft | Parcial | APEX + login Flutter Tilopay Demo (gradiente rojo, icono T). Auth real pendiente (P5). |
 | P16 | Tests (unit / widget) | Parcial | Smoke del scaffold |
 
 ---
