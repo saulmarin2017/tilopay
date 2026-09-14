@@ -23,5 +23,9 @@ class AppConfig {
 
   static const bool useMockAuth = true;
 
+  /// Credenciales de demo (solo si [useMockAuth]). No son claves Tilopay.
+  static const String mockUser = 'saul.marin';
+  static const String mockPassword = '1234';
+
   static const bool enableOfflineSync = false;
 }

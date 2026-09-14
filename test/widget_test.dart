@@ -20,10 +20,24 @@ void main() {
     await tester.pumpAndSettle();
 
     await tester.enterText(find.byType(TextField).at(0), 'saul.marin');
-    await tester.enterText(find.byType(TextField).at(1), 'demo');
+    await tester.enterText(find.byType(TextField).at(1), '1234');
     await tester.tap(find.text('Ingresar'));
     await tester.pumpAndSettle();
 
     expect(find.text('Checkout Tilopay'), findsOneWidget);
+  });
+
+  testWidgets('Clave incorrecta no abre Home', (WidgetTester tester) async {
+    await tester.pumpWidget(const TilopayApp());
+    await tester.pump(const Duration(milliseconds: 700));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(find.byType(TextField).at(0), 'saul.marin');
+    await tester.enterText(find.byType(TextField).at(1), '0000');
+    await tester.tap(find.text('Ingresar'));
+    await tester.pump();
+
+    expect(find.text('Usuario o contraseña incorrectos.'), findsOneWidget);
+    expect(find.text('Checkout Tilopay'), findsNothing);
   });
 }

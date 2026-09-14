@@ -34,6 +34,12 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() => _error = 'Ingresá usuario y contraseña.');
       return;
     }
+    if (!AppConfig.useMockAuth ||
+        user != AppConfig.mockUser ||
+        pass != AppConfig.mockPassword) {
+      setState(() => _error = 'Usuario o contraseña incorrectos.');
+      return;
+    }
     setState(() => _error = null);
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (_) => const HomeScreen()),
