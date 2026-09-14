@@ -1,0 +1,42 @@
+{
+  "info": {
+    "name": "Tilopay — loginSdk (Navasoft)",
+    "description": "Prueba del JSON que mandó soporte 2026-09-09. No lleva Authorization. Variables: apiuser, password, key (usar entorno Tilopay-sandbox.local.json).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "https://app.tilopay.com" }
+  ],
+  "item": [
+    {
+      "name": "loginSdk (el de soporte)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"apiuser\" : \"{{apiuser}}\",\n  \"password\" : \"{{password}}\",\n  \"key\": \"{{key}}\"\n}"
+        },
+        "url": "{{base_url}}/api/v1/loginSdk",
+        "description": "POST loginSdk. Header solo Content-Type. Body apiuser + password + key, espacios como en la captura de Tilopay. No Authorization."
+      }
+    },
+    {
+      "name": "login (sin Sdk)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"apiuser\" : \"{{apiuser}}\",\n  \"password\" : \"{{password}}\",\n  \"key\": \"{{key}}\"\n}"
+        },
+        "url": "{{base_url}}/api/v1/login",
+        "description": "Mismo body contra /login. También dio 401 por curl el 2026-09-09."
+      }
+    }
+  ]
+}

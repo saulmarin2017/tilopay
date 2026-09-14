@@ -7,7 +7,7 @@ App Flutter de cobro con **Tilopay** (WebView + ORDS). La capa web vive en `APEX
 | **Ámbito** | NAVASOFT (interno) |
 | **Remoto** | https://github.com/saulmarin2017/tilopay.git |
 | **Ruta local** | `MyFlutter/tilopay/` |
-| **Origen sandbox** | `Innovacion/NAVASOFT/proyectos/tilopay/` |
+| **Origen sandbox** | `Innovacion/NAVASOFT/proyectos/tilopay/` — copiado acá, ver [`docs/integracion/ORIGEN.md`](docs/integracion/ORIGEN.md) |
 | **App APEX (pruebas)** | **110** Tilopay · alias `tilopay` · **WKSP_PRUEBAS** |
 | **Sandbox** | Orden `NS-20260911-00000034` aprobada (`code=1`, `auth=123456`) |
 

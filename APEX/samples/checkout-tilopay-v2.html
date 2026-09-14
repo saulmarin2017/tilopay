@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Navasoft — demo carrusel Tilopay SDK V2</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--
+    Caso: 2-CASO-20260819-pasarela-pagos-tilopay
+    Demo local del carrusel. El token DEBE salir de GetTokenSdk (servidor).
+    Pegá un token de sandbox en #token y abrí este archivo en el browser.
+    No pongas API password aquí.
+  -->
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 28rem; margin: 2rem auto; }
+    label { display: block; margin-top: .8rem; font-weight: 600; }
+    input, select { width: 100%; padding: .4rem; box-sizing: border-box; }
+    button { margin-top: 1rem; padding: .5rem 1rem; }
+    .hint { color: #555; font-size: .85rem; }
+  </style>
+</head>
+<body>
+  <h1>Carrusel Tilopay (SDK V2)</h1>
+  <p class="hint">Token de GetTokenSdk (servidor). Nunca la API password.</p>
+  <label>Token</label>
+  <input type="text" id="token" placeholder="pegar token de GetTokenSdk">
+
+  <div class="payFormTilopay">
+    <label>Método de pago</label>
+    <select name="tlpy_payment_method" id="tlpy_payment_method">
+      <option value="">Seleccione</option>
+    </select>
+
+    <div id="tlpy_card_payment_div">
+      <label>Tarjetas guardadas</label>
+      <select name="tlpy_saved_cards" id="tlpy_saved_cards">
+        <option value="">Nueva tarjeta</option>
+      </select>
+      <label>Número</label>
+      <input type="text" id="tlpy_cc_number" name="tlpy_cc_number" autocomplete="off">
+      <label>Vence (MM/AA)</label>
+      <input type="text" id="tlpy_cc_expiration_date" name="tlpy_cc_expiration_date">
+      <label>CVV</label>
+      <input type="password" id="tlpy_cvv" name="tlpy_cvv" autocomplete="off">
+    </div>
+
+    <div id="tlpy_phone_number_div" style="display:none">
+      <label>Teléfono Yappy</label>
+      <input type="text" id="tlpy_phone_number" name="tlpy_phone_number">
+    </div>
+
+    <div id="sinpe_box" class="hint" style="display:none"></div>
+
+    <button type="button" onclick="processPayment()">Pagar</button>
+    <button type="button" onclick="showSinpe()">Ver datos SINPE</button>
+  </div>
+
+  <div id="responseTilopay"></div>
+
+  <script src="https://app.tilopay.com/sdk/v2/sdk_tpay.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", async function () {
+      const token = document.getElementById("token").value;
+      if (!token) {
+        console.info("Pegá un token y recargá, o llamá Init después de pegarlo.");
+        return;
+      }
+      await boot(token);
+    });
+
+    document.getElementById("token").addEventListener("change", async function () {
+      if (this.value) await boot(this.value);
+    });
+
+    async function boot(token) {
+      const initialize = await Tilopay.Init({
+        token: token,
+        currency: "CRC",
+        language: "es",
+        amount: 100,
+        billToFirstName: "Prueba",
+        billToLastName: "Navasoft",
+        billToAddress: "San Jose",
+        billToAddress2: "",
+        billToCity: "San Jose",
+        billToState: "SJ",
+        billToZipPostCode: "10101",
+        billToCountry: "CR",
+        billToTelephone: "88888888",
+        billToEmail: "prueba@navasoftsoluciones.com",
+        orderNumber: "sdk-" + Date.now(),
+        capture: 1,
+        redirect: window.location.href.split("?")[0] + "?callback=1",
+        subscription: 0,
+        hashVersion: "V2"
+      });
+      console.log(initialize);
+      loadOptions("tlpy_payment_method", initialize.methods || []);
+      loadOptions("tlpy_saved_cards", initialize.cards || []);
+    }
+
+    function loadOptions(selectId, items) {
+      const sel = document.getElementById(selectId);
+      items.forEach(function (item) {
+        const opt = document.createElement("option");
+        opt.value = item.id;
+        opt.text = item.name;
+        sel.appendChild(opt);
+      });
+    }
+
+    document.getElementById("tlpy_payment_method").onchange = async function () {
+      const method = this.value || "";
+      const parts = method.split(":");
+      const isYappy = parts[1] === "18";
+      document.getElementById("tlpy_card_payment_div").style.display = isYappy ? "none" : "block";
+      document.getElementById("tlpy_phone_number_div").style.display = isYappy ? "block" : "none";
+    };
+
+    async function processPayment() {
+      const payment = await Tilopay.startPayment();
+      console.log(payment);
+      alert(JSON.stringify(payment));
+    }
+
+    async function showSinpe() {
+      const params = await Tilopay.getSinpeMovil();
+      const box = document.getElementById("sinpe_box");
+      box.style.display = "block";
+      box.textContent = "SINPE → tel " + (params.number || "") +
+        "  monto " + (params.amount || "") +
+        "  código " + (params.code || "");
+    }
+  </script>
+</body>
+</html>
