@@ -21,3 +21,16 @@ Tilopay agrega `code`, `order`, `auth`, `OrderHash`, etc. Hacen falta **Applicat
 Before Header llama `ns_pay_tilopay.procesar_callback`.
 
 `P3_ESTADO = PENDIENTE_HASH` con HMAC vacío es correcto: Tilopay ya aprobó (`code=1`).
+
+## UI de presentación (A10)
+
+No mostrar token ni Application Items al usuario. Los ítems `P3_*` van **Hidden**; el recibo se pinta con HTML.
+
+| Dónde | Archivo |
+|-------|---------|
+| Región Static Content (Escape = **No**) | [`html/callback-region.html`](html/callback-region.html) |
+| Execute when Page Loads | [`html/callback-js.js`](html/callback-js.js) |
+
+El JS colorea el recibo: `code=1` verde, otro código rojo, sin code naranja.
+
+Mock: [`mockups/callback.html`](mockups/callback.html).

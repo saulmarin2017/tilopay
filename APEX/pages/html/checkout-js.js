@@ -6,17 +6,34 @@
   }
 })();
 
+(function fillSummary() {
+  var monto = $v("P1_MONTO") || "100.00";
+  var orden = $v("P1_ORDER_NUMBER") || "—";
+  var moneda = $v("P1_MONEDA") || "CRC";
+  var elM = document.getElementById("tp_monto_lbl");
+  var elO = document.getElementById("tp_orden_lbl");
+  if (elM) elM.textContent = monto;
+  if (elO) elO.textContent = orden + " · " + moneda;
+})();
+
 (function () {
   var token = $v("P1_TOKEN");
   var err   = $v("P1_ERROR");
   var msg   = document.getElementById("tilopay_msg");
   var n = 0;
 
+  function setMsg(text, isError) {
+    if (!msg) return;
+    msg.textContent = text;
+    if (isError) msg.classList.add("is-error");
+    else msg.classList.remove("is-error");
+  }
+
   function go() {
     if (typeof Tilopay === "undefined") {
       n += 1;
       if (n > 50) {
-        if (msg) msg.textContent = "No cargó sdk_tpay.min.js";
+        setMsg("No cargó sdk_tpay.min.js", true);
         return;
       }
       setTimeout(go, 100);
@@ -27,11 +44,11 @@
 
   function start() {
     if (err) {
-      if (msg) msg.textContent = "No hay token: " + err;
+      setMsg("No hay token: " + err, true);
       return;
     }
     if (!token) {
-      if (msg) msg.textContent = "P1_TOKEN vacío.";
+      setMsg("P1_TOKEN vacío.", true);
       return;
     }
 
@@ -57,15 +74,11 @@
       hashVersion: "V2"
     }).then(function (initialize) {
       console.log("Tilopay.Init", initialize);
-      if (msg) {
-        msg.textContent = "Init: " + (initialize.message || "") +
-          "  test=" + initialize.test +
-          " env=" + initialize.environment;
-      }
+      setMsg("Listo para pagar", false);
       loadOptions("tlpy_payment_method", initialize.methods || []);
       loadOptions("tlpy_saved_cards", initialize.cards || []);
     }).catch(function (e) {
-      if (msg) msg.textContent = "Init falló: " + e;
+      setMsg("Init falló: " + e, true);
     });
 
     function loadOptions(selectId, items) {
@@ -95,18 +108,18 @@
         if (ev) ev.preventDefault();
         var met = document.getElementById("tlpy_payment_method");
         if (!met || !met.value) {
-          if (msg) msg.textContent = "Elegí el método de pago.";
+          setMsg("Elegí el método de pago.", true);
           return false;
         }
-        if (msg) msg.textContent = "Enviando a Tilopay…";
+        setMsg("Enviando a Tilopay…", false);
         Tilopay.startPayment()
           .then(function (p) {
             console.log("startPayment", p);
-            if (msg) msg.textContent = "Pagar: " + ((p && p.message) || JSON.stringify(p));
+            setMsg((p && p.message) || "Procesando pago…", false);
           })
           .catch(function (e) {
             console.log("startPayment error", e);
-            if (msg) msg.textContent = "Pagar error: " + e;
+            setMsg("Pagar error: " + e, true);
           });
         return false;
       };

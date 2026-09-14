@@ -1,7 +1,7 @@
 # Pendientes — Aplicación APEX (Tilopay)
 
-**Última actualización:** 2026-09-14  
-**Estado general:** Checkout sandbox **OK** (app 110). Falta HMAC, export y ORDS para Flutter.  
+**Última actualización:** 2026-09-14 (branding Tilopay Demo en repo)  
+**Estado general:** Checkout sandbox **OK** (app 110). Branding listo en repo; falta pegar en App Builder. HMAC / export / ORDS siguen abiertos.  
 **Workspace:** `WKSP_PRUEBAS`  
 **Application ID:** **110** · alias `tilopay`
 
@@ -29,7 +29,7 @@ Este archivo es el **seguimiento de la app web**; no duplicar el detalle en `doc
 | A4 | Application Items Tilopay (`CODE`, `AUTH`, `ORDER`, …) | **Hecho** | Unrestricted; evitan ERR-1002 |
 | A5 | Pago sandbox Visa | **Hecho** | `NS-20260911-00000034`, `code=1`, `auth=123456` |
 | **A6** | **Export de la app APEX al repo** | Pendiente | `exports/app/f110.sql` |
-| **A10** | **Ocultar token / Application Items en UI callback** | Pendiente | No mostrar secretos al usuario |
+| **A10** | **Ocultar token / Application Items en UI callback** | **Repo listo** | HTML `callback-region.html` + JS. Pegar en p.3; ítems `P3_*` Hidden. |
 | **A11** | **HMAC `OrderHash`** | **Bloqueado** | Sin `hmac_secreto` el estado queda `PENDIENTE_HASH` |
 | **A12** | **Página de pago pública o ORDS iniciar** | Pendiente | Hace falta para WebView Flutter (camino A/B) |
 
@@ -40,8 +40,8 @@ Este archivo es el **seguimiento de la app web**; no duplicar el detalle en `doc
 | ID | Tarea | Estado | Notas |
 |----|--------|--------|-------|
 | A13 | Prueba sandbox SINPE Móvil | Pendiente | Visa/MC ya OK |
-| A8 | Login APEX con branding Navasoft | Pendiente | Cuando haya logo |
-| A9 | Shell menú alineado al branding | Pendiente | |
+| **A8** | **Login APEX Tilopay Demo (gradiente rojo)** | **Repo listo** | CSS `login_tilopay.css` + icono `tilopay_icon.png`. Guía `pages/P9999_login.md`. Título **Tilopay Demo**. |
+| **A9** | **Shell menú alineado al branding** | **Repo listo** | CSS `app_tilopay.css`. Guía `pages/THEME_TILOPAY_SHELL.md`. |
 | A4b | Auth / roles APEX (si deja de ser app de pruebas) | Pendiente | Distinto del OAuth de Flutter |
 
 ---
@@ -50,7 +50,7 @@ Este archivo es el **seguimiento de la app web**; no duplicar el detalle en `doc
 
 | ID | Tarea | Estado | Notas |
 |----|--------|--------|-------|
-| A7 | Theme / branding en todas las páginas | Pendiente | |
+| **A7** | **Theme / branding en todas las páginas** | **Repo listo** | Checkout + callback con cards. Mockups en `pages/mockups/`. Pegar en workspace. |
 | A14 | PayPal Business (extranjeros) | Pendiente | Fase 2 |
 | A15 | Tokenización / cargos recurrentes | Pendiente | `InitTokenize` |
 

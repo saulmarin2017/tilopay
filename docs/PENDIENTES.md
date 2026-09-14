@@ -1,7 +1,7 @@
 # Pendientes — Tilopay (Flutter)
 
 Documento de seguimiento de tareas abiertas.  
-**Última actualización:** 2026-09-14 (scaffold del repo + carpeta `APEX/`)
+**Última actualización:** 2026-09-14 (branding APEX Tilopay Demo en repo)
 
 **APEX (app web):** [`../APEX/PENDIENTES.md`](../APEX/PENDIENTES.md)  
 **Especificación APEX vs Flutter:** [`integracion/RECOMENDACIONES_APEX.md`](integracion/RECOMENDACIONES_APEX.md)
@@ -71,7 +71,7 @@ Hecho en `Innovacion/NAVASOFT/proyectos/tilopay/` y app 110:
 
 | ID | Tarea | Estado | Notas |
 |----|--------|--------|-------|
-| P7 | Theme / branding Navasoft | Pendiente | Logo cuando exista |
+| P7 | Theme / branding Navasoft | Parcial | APEX Tilopay Demo listo en repo (A7/A8/A9). Flutter splash sigue azul del scaffold. |
 | P16 | Tests (unit / widget) | Parcial | Smoke del scaffold |
 
 ---

@@ -1,34 +1,54 @@
 <!-- Región HTML de la página Checkout (app 110). IDs de Tilopay: no renombrar. -->
-<p id="tilopay_msg" class="hint"></p>
+<div class="tp-checkout">
+  <div class="tp-checkout-hero">
+    <img src="#APP_FILES#tilopay_icon.png" alt="Tilopay" width="48" height="48" />
+    <div>
+      <p class="tp-kicker">Tilopay Demo</p>
+      <h2>Checkout</h2>
+    </div>
+  </div>
 
-<div class="payFormTilopay">
-  <label>Método de pago</label>
-  <select name="tlpy_payment_method" id="tlpy_payment_method">
-    <option value="">Seleccione</option>
-  </select>
+  <div class="tp-amount">
+    <span class="tp-label">Monto</span>
+    <strong>₡ <span id="tp_monto_lbl">—</span></strong>
+    <small>Orden <span id="tp_orden_lbl">—</span></small>
+  </div>
 
-  <div id="tlpy_card_payment_div">
-    <label>Tarjetas guardadas</label>
-    <select name="tlpy_saved_cards" id="tlpy_saved_cards">
-      <option value="">Nueva tarjeta</option>
+  <p id="tilopay_msg" class="hint"></p>
+
+  <div class="payFormTilopay">
+    <label for="tlpy_payment_method">Método de pago</label>
+    <select name="tlpy_payment_method" id="tlpy_payment_method">
+      <option value="">Seleccione</option>
     </select>
-    <label>Número</label>
-    <input type="text" id="tlpy_cc_number" name="tlpy_cc_number" autocomplete="off">
-    <label>Vence (MM/AA)</label>
-    <input type="text" id="tlpy_cc_expiration_date" name="tlpy_cc_expiration_date">
-    <label>CVV</label>
-    <input type="password" id="tlpy_cvv" name="tlpy_cvv" autocomplete="off">
+
+    <div id="tlpy_card_payment_div">
+      <label for="tlpy_saved_cards">Tarjetas guardadas</label>
+      <select name="tlpy_saved_cards" id="tlpy_saved_cards">
+        <option value="">Nueva tarjeta</option>
+      </select>
+      <label for="tlpy_cc_number">Número</label>
+      <input type="text" id="tlpy_cc_number" name="tlpy_cc_number" autocomplete="off">
+      <label for="tlpy_cc_expiration_date">Vence (MM/AA)</label>
+      <input type="text" id="tlpy_cc_expiration_date" name="tlpy_cc_expiration_date">
+      <label for="tlpy_cvv">CVV</label>
+      <input type="password" id="tlpy_cvv" name="tlpy_cvv" autocomplete="off">
+    </div>
+
+    <div id="tlpy_phone_number_div" style="display:none">
+      <label for="tlpy_phone_number">Teléfono Yappy</label>
+      <input type="text" id="tlpy_phone_number" name="tlpy_phone_number">
+    </div>
+
+    <div id="sinpe_box" style="display:none"></div>
+
+    <div class="tp-actions">
+      <button type="button" id="btn_pagar">Pagar</button>
+      <button type="button" id="btn_sinpe">Ver datos SINPE</button>
+    </div>
   </div>
 
-  <div id="tlpy_phone_number_div" style="display:none">
-    <label>Teléfono Yappy</label>
-    <input type="text" id="tlpy_phone_number" name="tlpy_phone_number">
-  </div>
-
-  <div id="sinpe_box" style="display:none"></div>
-
-  <button type="button" id="btn_pagar">Pagar</button>
-  <button type="button" id="btn_sinpe">Ver datos SINPE</button>
+  <p class="tp-secure">Pago seguro · PCI via Tilopay SDK</p>
 </div>
 
 <div id="responseTilopay" style="min-height:40px"></div>

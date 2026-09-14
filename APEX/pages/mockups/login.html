@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tilopay Demo — Login</title>
+  <style>
+    :root {
+      --red: #ed1525;
+      --red-dark: #b0101c;
+      --text: #1a1a1a;
+      --muted: #5f6368;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      color: var(--text);
+      background: linear-gradient(155deg, #5c0810 0%, #7a0a14 28%, #b0101c 58%, #ed1525 100%);
+      background-attachment: fixed;
+      display: grid;
+      place-items: center;
+      padding: 24px 16px;
+    }
+    .card {
+      width: 100%;
+      max-width: 420px;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 16px 48px rgba(92, 8, 16, 0.35);
+      padding: 28px 28px 24px;
+    }
+    .icon {
+      display: block;
+      width: 88px;
+      height: 88px;
+      margin: 0 auto 12px;
+      border-radius: 22px;
+    }
+    h1 {
+      margin: 0;
+      text-align: center;
+      font-size: 1.55rem;
+      letter-spacing: -0.02em;
+    }
+    .tag {
+      margin: 6px 0 18px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin: 12px 0 6px;
+    }
+    input {
+      width: 100%;
+      min-height: 44px;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 0 12px;
+      font-size: 15px;
+    }
+    input:focus {
+      outline: none;
+      border-color: var(--red);
+      box-shadow: 0 0 0 2px rgba(237, 21, 37, 0.22);
+    }
+    .row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 14px 0 4px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .row input { width: auto; min-height: 0; }
+    button {
+      width: 100%;
+      min-height: 48px;
+      margin-top: 14px;
+      border: none;
+      border-radius: 10px;
+      background: var(--red);
+      color: #fff;
+      font-weight: 700;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover { background: var(--red-dark); }
+    .links {
+      margin-top: 14px;
+      text-align: center;
+      font-size: 13px;
+    }
+    .links a { color: var(--red); text-decoration: none; }
+    .navasoft {
+      margin-top: 18px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <form class="card" action="checkout.html">
+    <img class="icon" src="../../assets/tilopay_icon.svg" alt="Tilopay" />
+    <h1>Tilopay Demo</h1>
+    <p class="tag">Checkout sandbox · Navasoft</p>
+    <label for="user">Usuario</label>
+    <input id="user" name="user" type="text" autocomplete="username" />
+    <label for="pass">Contraseña</label>
+    <input id="pass" name="pass" type="password" autocomplete="current-password" />
+    <div class="row">
+      <input id="remember" type="checkbox" />
+      <label for="remember" style="margin:0;font-weight:500">Recordarme</label>
+    </div>
+    <button type="submit">Acceder</button>
+    <div class="links"><a href="checkout.html">Entrar al checkout (mock)</a></div>
+    <p class="navasoft">By Navasoft Soluciones</p>
+  </form>
+</body>
+</html>

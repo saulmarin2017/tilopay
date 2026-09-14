@@ -11,8 +11,8 @@ App **110** · WKSP_PRUEBAS.
 |-----|------|-----------|
 | [`P1_checkout.md`](P1_checkout.md) | Checkout / carrusel SDK V2 | A2 hecho |
 | [`P3_callback.md`](P3_callback.md) | Retorno Tilopay | A3 hecho |
-| `P9999_login.md` | Login branding | A8 |
-| `THEME_TILOPAY_SHELL.md` | CSS global header/menú | A9 |
+| [`P9999_login.md`](P9999_login.md) | Login Tilopay Demo | A8 repo listo |
+| [`THEME_TILOPAY_SHELL.md`](THEME_TILOPAY_SHELL.md) | CSS global header/menú | A9 repo listo |
 
 Subcarpetas:
 

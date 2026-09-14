@@ -1,0 +1,301 @@
+/* ***************************************************************************
+   TILOPAY DEMO — login_tilopay.css
+   Proyecto: tilopay
+   Ruta:     APEX/shared/css/login_tilopay.css
+
+   Pegar en APEX: aplicación 110 → página Login (9999) → CSS → Inline
+   Static File (si se sube):  login_tilopay.css
+   URL:                       #APP_FILES#login_tilopay.css
+
+   NO usar login_ordexia.css ni login_gridxia.css.
+   *************************************************************************** */
+
+:root {
+  --tilopay-red: #ed1525;
+  --tilopay-red-dark: #b0101c;
+  --tilopay-red-deeper: #7a0a14;
+  --tilopay-red-soft: #ff6b75;
+  --tilopay-paua: #160065;
+  --tilopay-text: #1a1a1a;
+  --tilopay-text-muted: #5f6368;
+  --tilopay-error: #c62828;
+  --ut-app-icon-size: auto;
+  --ut-app-icon-background-color: transparent;
+  --ut-login-logo-size: none;
+}
+
+body.t-PageBody--login,
+.t-Login-page,
+.t-PageBody--login .t-Body,
+body .t-Login-container,
+body[class*="login"],
+.t-Body--login {
+  background-color: #5c0810 !important;
+  background-image: linear-gradient(
+    155deg,
+    #5c0810 0%,
+    #7a0a14 28%,
+    #b0101c 58%,
+    #ed1525 100%
+  ) !important;
+  background-attachment: fixed !important;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+  min-height: 100vh !important;
+}
+
+.t-Login-region,
+.t-Login-container .t-Region {
+  background: #ffffff !important;
+  border-radius: 20px !important;
+  border: none !important;
+  box-shadow: 0 16px 48px rgba(92, 8, 16, 0.35) !important;
+  max-width: 440px !important;
+  width: 100% !important;
+  margin: 0 auto !important;
+  padding: 1.35rem 1.5rem 1.4rem 1.5rem !important;
+  min-height: 0 !important;
+  height: auto !important;
+  overflow: visible !important;
+}
+
+.t-Login-header,
+.t-Login-region .t-Region-header,
+.t-Login-region > .t-Region-header,
+.t-Login-region .t-Region-headerItems,
+.t-Login-region .t-Region-headerItems--title,
+.t-Login-region .t-Region-headerItems--buttons {
+  margin: 0 !important;
+  padding: 0 !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  border: none !important;
+  background: transparent !important;
+  gap: 0 !important;
+}
+
+.t-Login-logo,
+.t-Login-logo a,
+.t-Login-header .t-Login-logo {
+  display: block !important;
+  width: 100% !important;
+  margin: 0 0 0.55rem 0 !important;
+  padding: 0 !important;
+  min-height: 0 !important;
+  height: auto !important;
+  line-height: 0 !important;
+  text-align: center !important;
+  background: transparent !important;
+  border: none !important;
+  overflow: visible !important;
+}
+
+.t-Login-logo img,
+.t-Login-logo a img,
+.t-Login-header img,
+.t-Login-region .t-Region-header img {
+  display: block !important;
+  width: 88px !important;
+  height: 88px !important;
+  max-width: 88px !important;
+  max-height: 88px !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  object-fit: contain !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 22px !important;
+}
+
+.t-Login-logo .a-Icon,
+.t-Login-logo .fa,
+.t-Login-logo i {
+  display: none !important;
+}
+
+/* Título visible: "Tilopay Demo" */
+.t-Login-title,
+.t-Login-region h1,
+.t-Login-region .t-Region-title,
+.t-Login-region .t-Region-headerText {
+  display: block !important;
+  position: static !important;
+  left: auto !important;
+  width: 100% !important;
+  height: auto !important;
+  margin: 0.15rem 0 0.15rem 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  visibility: visible !important;
+  font-size: 1.55rem !important;
+  line-height: 1.25 !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em !important;
+  text-align: center !important;
+  color: var(--tilopay-text) !important;
+}
+
+.t-Login-region .t-Region-headerIcon {
+  display: none !important;
+}
+
+.t-Login-body,
+.t-Login-fields,
+.t-Login-region .t-Region-bodyWrap,
+.t-Login-region .t-Region-body,
+.t-Login-region .t-Form,
+.t-Login-region form {
+  margin: 0.45rem 0 0 0 !important;
+  padding: 0 !important;
+  min-height: 0 !important;
+  position: relative !important;
+  z-index: 1 !important;
+  clear: both !important;
+}
+
+.t-Login-region .container,
+.t-Login-region .row,
+.t-Login-region .col,
+.t-Login-region [class*="col-"] {
+  margin-top: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding-top: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  min-height: 0 !important;
+  float: none !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  flex: none !important;
+}
+
+.t-Login-region .t-Form-fieldContainer,
+.t-Login-region .t-Form-fieldContainer.rel-col {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-top: 0.5rem !important;
+  margin-bottom: 0 !important;
+  grid-template-columns: none !important;
+}
+
+.t-Login-region .t-Form-fieldContainer:first-child,
+.t-Login-region .t-Form-fieldContainer:first-of-type {
+  margin-top: 0 !important;
+}
+
+.t-Login-region .t-Form-labelContainer,
+.t-Login-region .t-Form-inputContainer {
+  display: block !important;
+  float: none !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 0 !important;
+}
+
+.t-Login-region .t-Form-itemWrapper {
+  display: block !important;
+  width: 100% !important;
+}
+
+.t-Login-region .apex-item-icon,
+.t-Login-region .t-Form-itemText--pre,
+.t-Login-region .t-Form-itemWrapper > .t-Icon,
+.t-Login-region .t-Form-inputContainer > .t-Icon,
+.t-Login-region .fa-user,
+.t-Login-region .fa-user-o,
+.t-Login-region .fa-user-circle,
+.t-Login-region .fa-key,
+.t-Login-region .fa-lock,
+.t-Login-region .fa-lock-o,
+.t-Login-region [class*="fa-user"],
+.t-Login-region [class*="fa-key"],
+.t-Login-region [class*="fa-lock"] {
+  display: none !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: 0 !important;
+}
+
+.t-Login-region .t-Button .fa-eye,
+.t-Login-region .t-Button [class*="fa-eye"],
+.t-Login-region .t-Button .fa-eye-slash {
+  display: inline-block !important;
+  visibility: visible !important;
+  width: auto !important;
+  height: auto !important;
+  font-size: inherit !important;
+}
+
+.t-Login-region label,
+.t-Login-region .t-Form-label {
+  color: var(--tilopay-text) !important;
+}
+
+.t-Login-region input.apex-item-text,
+.t-Login-region input[type="text"],
+.t-Login-region input[type="password"],
+.t-Login-region .apex-item-text {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  background: #ffffff !important;
+  border: 1px solid #e0e0e0 !important;
+  border-radius: 8px !important;
+  color: var(--tilopay-text) !important;
+  min-height: 44px;
+}
+
+.t-Login-region input.apex-item-text:focus,
+.t-Login-region input[type="text"]:focus,
+.t-Login-region input[type="password"]:focus {
+  border-color: var(--tilopay-red) !important;
+  box-shadow: 0 0 0 2px rgba(237, 21, 37, 0.22) !important;
+  outline: none !important;
+}
+
+.t-Login-region .t-Button--hot,
+.t-Login-region button.t-Button--hot,
+.t-Login-buttons .t-Button--hot,
+.t-Login-region .t-Button.t-Button--hot {
+  background-color: var(--tilopay-red) !important;
+  background-image: none !important;
+  border-color: var(--tilopay-red) !important;
+  color: #ffffff !important;
+  border-radius: 10px !important;
+  font-weight: 600 !important;
+  min-height: 48px;
+  width: 100% !important;
+  margin-top: 0.55rem !important;
+  box-shadow: none !important;
+}
+
+.t-Login-region .t-Button--hot:hover,
+.t-Login-region .t-Button--hot:focus {
+  background-color: var(--tilopay-red-dark) !important;
+  border-color: var(--tilopay-red-dark) !important;
+  color: #ffffff !important;
+}
+
+.t-Login-region a {
+  color: var(--tilopay-red) !important;
+}
+
+.t-Login-region a:hover {
+  color: var(--tilopay-paua) !important;
+}
+
+.t-Login-region input[type="checkbox"] {
+  accent-color: var(--tilopay-red);
+}
+
+.t-Login-region .t-Form-error,
+.t-Login-region .a-Form-error {
+  color: var(--tilopay-error) !important;
+}

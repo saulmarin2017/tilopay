@@ -74,11 +74,12 @@ APEX/
 
 Páginas armadas en workspace:
 
-- Login (default)
+- Login (default) — branding **Tilopay Demo** listo en repo (`pages/P9999_login.md`)
 - **P1** Home / checkout (carrusel Tilopay SDK V2)
 - **P3** Callback (`CALLBACK`)
 
-Receta: [`docs/PAGINA-CHECKOUT.md`](docs/PAGINA-CHECKOUT.md)
+Receta cobro: [`docs/PAGINA-CHECKOUT.md`](docs/PAGINA-CHECKOUT.md)  
+Presentación (abrir en Chrome): [`pages/mockups/login.html`](pages/mockups/login.html)
 
 ---
 

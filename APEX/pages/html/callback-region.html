@@ -1,0 +1,19 @@
+<!-- Región HTML de la página Callback (app 110). No mostrar token ni Application Items. -->
+<article id="tp_receipt" class="tp-receipt is-pending">
+  <div class="tp-receipt-hero">
+    <span class="tp-badge">Tilopay Demo</span>
+    <h2 id="tp_receipt_title">Procesando retorno</h2>
+    <p id="tp_receipt_sub">Leyendo el callback de Tilopay…</p>
+  </div>
+  <div class="tp-rows">
+    <div class="tp-row"><span>Orden</span><strong id="tp_r_order">&P3_ORDER.</strong></div>
+    <div class="tp-row"><span>Autorización</span><strong id="tp_r_auth">&P3_AUTH.</strong></div>
+    <div class="tp-row"><span>Código</span><strong id="tp_r_code">&P3_CODE.</strong></div>
+    <div class="tp-row"><span>Descripción</span><strong id="tp_r_desc">&P3_DESC.</strong></div>
+    <div class="tp-row"><span>Estado</span><strong id="tp_r_estado">&P3_ESTADO.</strong></div>
+  </div>
+  <div class="tp-receipt-foot">
+    <a href="home">Nuevo cobro</a>
+    <p id="tp_r_error" class="tp-hint">&P3_ERROR.</p>
+  </div>
+</article>

@@ -1,0 +1,563 @@
+/* =============================================================================
+   Tilopay Demo — Shell APEX (barra horizontal + menú lateral + checkout)
+   Paleta: carmesí Tilopay #ED1525
+
+   Cómo aplicar:
+   1. Shared Components → Static Application Files → Create
+      - File: app_tilopay.css  (esta carpeta: APEX/shared/css/)
+   2. Shared Components → User Interface → Themes → [Theme activo]
+      → CSS File URLs:
+        #APP_FILES#app_tilopay.css
+   3. Save + hard refresh (Ctrl+F5)
+
+   No reemplaza el CSS del login (login_tilopay.css en página 9999).
+   ============================================================================= */
+
+:root {
+  --tilopay-red: #ed1525;
+  --tilopay-red-dark: #b0101c;
+  --tilopay-red-deeper: #7a0a14;
+  --tilopay-red-soft: #ff6b75;
+  --tilopay-paua: #160065;
+  --tilopay-surface: #f5f7fa;
+  --tilopay-text: #1a1a1a;
+  --tilopay-text-muted: #5f6368;
+  --tilopay-white: #ffffff;
+  --tilopay-ok: #1b8a4a;
+  --tilopay-warn: #e65100;
+}
+
+:root,
+.t-PageBody {
+  --a-palette-primary: #b0101c;
+  --ut-palette-primary: #b0101c;
+  --ut-palette-primary--hover: #7a0a14;
+  --ut-palette-primary--active: #b0101c;
+  --a-palette-primary-text: #ffffff;
+  --ut-header-background-color: #b0101c;
+  --ut-header-text-color: #ffffff;
+  --ut-body-background-color: #f5f7fa;
+}
+
+/* =============================================================================
+   BARRA HORIZONTAL
+   ============================================================================= */
+
+.t-Header,
+.t-Header-branding,
+.t-Header-navBar,
+#t_Header,
+header.t-Header {
+  background-color: var(--tilopay-red-dark) !important;
+  background-image: none !important;
+  border: none !important;
+  box-shadow: 0 2px 8px rgba(92, 8, 16, 0.28) !important;
+  color: var(--tilopay-white) !important;
+}
+
+.t-Header-branding,
+.t-Header .t-Header-branding,
+#t_Header .t-Header-branding {
+  background-color: var(--tilopay-red-dark) !important;
+  background-image: none !important;
+}
+
+.t-Header-logo-link,
+.t-Header-logo-link span,
+.t-Header-logo-link .t-Header-logo-link-text,
+.t-Header .t-Header-logo,
+.t-Header a,
+.t-Header .a-MenuBar-label,
+.t-Header .t-Button,
+.t-Header .t-Button .t-Icon,
+.t-Header .t-Button .a-Icon,
+.t-Header .t-Icon,
+.t-Header .a-Icon,
+.t-NavigationBar-item,
+.t-NavigationBar-item a,
+.t-NavigationBar-menu,
+#t_Header .t-Button,
+#t_Header a {
+  color: var(--tilopay-white) !important;
+}
+
+.t-Header-logo-link:hover,
+.t-Header a:hover,
+.t-NavigationBar-item a:hover {
+  color: var(--tilopay-red-soft) !important;
+  opacity: 0.95;
+}
+
+.t-Header-logo img,
+.t-Header .t-Header-logo-link img {
+  max-height: 36px !important;
+  width: auto !important;
+  object-fit: contain !important;
+  border-radius: 8px !important;
+}
+
+.t-Header .t-Button,
+.t-Header .t-Button--header,
+#t_Header .t-Button,
+.t-Header .a-Button {
+  background-color: transparent !important;
+  background-image: none !important;
+  border-color: transparent !important;
+  color: var(--tilopay-white) !important;
+  box-shadow: none !important;
+}
+
+.t-Header .t-Button:hover,
+.t-Header .t-Button:focus,
+#t_Header .t-Button:hover {
+  background-color: rgba(237, 21, 37, 0.35) !important;
+  color: var(--tilopay-white) !important;
+}
+
+/* =============================================================================
+   MENÚ VERTICAL
+   ============================================================================= */
+
+.t-Body-nav,
+.t-TreeNav,
+#t_Body_nav,
+.t-Body-nav .t-TreeNav,
+aside.t-Body-nav {
+  background-color: #7a0a14 !important;
+  background-image: linear-gradient(
+    165deg,
+    #5c0810 0%,
+    #7a0a14 45%,
+    #b0101c 100%
+  ) !important;
+  border-right: 1px solid rgba(255, 107, 117, 0.22) !important;
+  color: var(--tilopay-white) !important;
+}
+
+.t-TreeNav .a-TreeView,
+.t-TreeNav .a-TreeView-node,
+.t-TreeNav .a-TreeView-content,
+.t-TreeNav .a-TreeView-label,
+.t-TreeNav a,
+.t-Body-nav a,
+.t-Body-nav .a-TreeView-row {
+  color: var(--tilopay-white) !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border-left: none !important;
+  font-weight: 500 !important;
+  box-shadow: none !important;
+}
+
+.t-TreeNav .a-Icon,
+.t-TreeNav .fa,
+.t-Body-nav .a-Icon,
+.t-Body-nav .fa,
+.t-TreeNav .a-TreeView-toggle {
+  color: #ffcdd2 !important;
+}
+
+.t-TreeNav .a-TreeView-row:hover,
+.t-TreeNav .a-TreeView-content:hover,
+.t-TreeNav a:hover,
+.t-Body-nav .a-TreeView-row:hover {
+  background-color: #b0101c !important;
+  color: var(--tilopay-white) !important;
+}
+
+.t-TreeNav .a-TreeView-row.is-current--top,
+.t-TreeNav .a-TreeView-row.is-current,
+.t-TreeNav .is-selected > .a-TreeView-row,
+.t-TreeNav .is-selected > .a-TreeView-content,
+.t-TreeNav .a-TreeView-content.is-current,
+.t-TreeNav li.is-current > .a-TreeView-content,
+.t-TreeNav li.is-selected > .a-TreeView-content,
+.t-TreeNav li.is-current > .a-TreeView-row,
+.t-TreeNav li.is-selected > .a-TreeView-row,
+.t-Body-nav .is-active,
+.t-Body-nav .is-current,
+.t-Body-nav .a-TreeView-row.is-current--top {
+  background-color: var(--tilopay-red) !important;
+  background-image: none !important;
+  color: var(--tilopay-white) !important;
+  font-weight: 600 !important;
+}
+
+.t-TreeNav .is-current .a-Icon,
+.t-TreeNav .is-selected .a-Icon,
+.t-TreeNav .is-current--top .a-Icon,
+.t-TreeNav .is-current .fa,
+.t-TreeNav .is-selected .fa,
+.t-Body-nav .is-current .a-Icon,
+.t-Body-nav .is-current--top .a-Icon {
+  color: var(--tilopay-white) !important;
+}
+
+.t-Body-nav,
+.t-TreeNav,
+#t_Body_nav {
+  --ut-tree-nav-selected-background-color: #ed1525;
+  --ut-tree-nav-hover-background-color: #b0101c;
+  --ut-tree-nav-link-text-color: #ffffff;
+  --ut-tree-nav-selected-text-color: #ffffff;
+  --a-treeview-selected-background-color: #ed1525;
+  --a-treeview-hover-background-color: #b0101c;
+}
+
+.t-Body-nav .t-TreeNav-top,
+.t-TreeNav-controls {
+  background-color: transparent !important;
+  border-bottom: 1px solid rgba(255, 107, 117, 0.2) !important;
+}
+
+/* =============================================================================
+   CONTENIDO
+   ============================================================================= */
+
+.t-Body-main,
+.t-Body-content,
+.t-Body-contentInner,
+#t_Body_content {
+  background-color: var(--tilopay-surface) !important;
+}
+
+.t-Body-title,
+.t-BreadcrumbRegion,
+.t-BreadcrumbRegion-body {
+  background-color: var(--tilopay-white) !important;
+  border-bottom: 1px solid #e8eaed !important;
+}
+
+.t-Body-title h1,
+.t-BreadcrumbRegion h1,
+.t-Body-title .t-Heading {
+  color: var(--tilopay-red-dark) !important;
+}
+
+.t-BreadcrumbRegion .t-Icon:has(.fa),
+.t-Body-title .t-Icon:has(.fa),
+.t-BreadcrumbRegion-icon:has(.fa),
+.t-Body-title .t-Icon--page:has(.fa) {
+  display: inline-flex !important;
+  width: 3rem !important;
+  height: 3rem !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 0.5rem !important;
+  background-color: var(--tilopay-red) !important;
+  color: var(--tilopay-white) !important;
+  margin-right: 0.75rem !important;
+}
+
+.t-Button--hot,
+button.t-Button--hot,
+.t-Button.t-Button--hot {
+  background-color: var(--tilopay-red) !important;
+  background-image: none !important;
+  border-color: var(--tilopay-red) !important;
+  color: var(--tilopay-white) !important;
+}
+
+.t-Button--hot:hover,
+.t-Button--hot:focus {
+  background-color: var(--tilopay-red-dark) !important;
+  border-color: var(--tilopay-red-dark) !important;
+  color: var(--tilopay-white) !important;
+}
+
+.a-GV-header,
+.a-GV-headerLabel,
+.a-GV-table th,
+.a-IRR-header,
+.a-IRR-headerLink,
+.a-IRR-table th,
+.t-Report-colHead,
+.t-Report-report th,
+.t-fht-thead th,
+table.a-IRR-table thead th,
+table.a-GV-table thead th,
+.a-IG .a-GV-header {
+  background-color: var(--tilopay-red-dark) !important;
+  background-image: none !important;
+  color: var(--tilopay-white) !important;
+  font-weight: 600 !important;
+}
+
+.t-Body.js-navExpanded .t-Body-nav,
+.t-Body--showLeft .t-Body-nav {
+  background-color: #7a0a14 !important;
+  background-image: linear-gradient(
+    165deg,
+    #5c0810 0%,
+    #7a0a14 45%,
+    #b0101c 100%
+  ) !important;
+}
+
+.t-Body-navOverlay {
+  background-color: rgba(92, 8, 16, 0.55) !important;
+}
+
+/* =============================================================================
+   CHECKOUT P1  (IDs Tilopay: no renombrar)
+   ============================================================================= */
+
+.tp-checkout {
+  max-width: 520px;
+  margin: 0 auto 2rem;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 10px 32px rgba(22, 0, 101, 0.08);
+  overflow: hidden;
+}
+
+.tp-checkout-hero {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 1.15rem 1.35rem;
+  background: linear-gradient(135deg, #b0101c 0%, #ed1525 100%);
+  color: #fff;
+}
+
+.tp-checkout-hero img {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.tp-kicker {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.85;
+  font-weight: 600;
+}
+
+.tp-checkout-hero h2 {
+  margin: 2px 0 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.tp-amount {
+  margin: 1.1rem 1.35rem 0;
+  padding: 1rem 1.1rem;
+  border-radius: 14px;
+  background: #fff5f5;
+  border: 1px solid #ffd6d9;
+}
+
+.tp-amount .tp-label {
+  display: block;
+  font-size: 12px;
+  color: var(--tilopay-text-muted);
+  font-weight: 600;
+}
+
+.tp-amount strong {
+  display: block;
+  font-size: 1.85rem;
+  letter-spacing: -0.03em;
+  color: var(--tilopay-text);
+  margin: 2px 0 4px;
+}
+
+.tp-amount small {
+  color: var(--tilopay-text-muted);
+  font-size: 12px;
+}
+
+.payFormTilopay {
+  padding: 1.1rem 1.35rem 0.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.payFormTilopay label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--tilopay-text);
+  margin-top: 0.55rem;
+}
+
+.payFormTilopay input,
+.payFormTilopay select {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 44px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 0 12px;
+  font-size: 15px;
+  background: #fff;
+  color: var(--tilopay-text);
+}
+
+.payFormTilopay input:focus,
+.payFormTilopay select:focus {
+  outline: none;
+  border-color: var(--tilopay-red);
+  box-shadow: 0 0 0 2px rgba(237, 21, 37, 0.18);
+}
+
+.tp-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 1rem 0 0.4rem;
+}
+
+#btn_pagar {
+  min-height: 48px;
+  border: none;
+  border-radius: 12px;
+  background: var(--tilopay-red);
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#btn_pagar:hover {
+  background: var(--tilopay-red-dark);
+}
+
+#btn_sinpe {
+  min-height: 42px;
+  border: 1px solid #ffd6d9;
+  border-radius: 12px;
+  background: #fff;
+  color: var(--tilopay-red-dark);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+#sinpe_box {
+  margin-top: 0.5rem;
+  padding: 0.75rem 0.9rem;
+  border-radius: 10px;
+  background: #fff8e1;
+  color: #5d4037;
+  font-size: 13px;
+}
+
+#tilopay_msg {
+  margin: 0 1.35rem 0.2rem;
+  min-height: 1.2em;
+  font-size: 13px;
+  color: var(--tilopay-text-muted);
+}
+
+#tilopay_msg.is-error {
+  color: var(--tilopay-red);
+  font-weight: 600;
+}
+
+.tp-secure {
+  margin: 0.4rem 1.35rem 1.2rem;
+  font-size: 12px;
+  color: var(--tilopay-text-muted);
+  text-align: center;
+}
+
+/* =============================================================================
+   CALLBACK P3
+   ============================================================================= */
+
+.tp-receipt {
+  max-width: 480px;
+  margin: 0 auto 2rem;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 10px 32px rgba(22, 0, 101, 0.08);
+  overflow: hidden;
+}
+
+.tp-receipt-hero {
+  text-align: center;
+  padding: 1.6rem 1.35rem 1.2rem;
+  color: #fff;
+}
+
+.tp-receipt.is-ok .tp-receipt-hero {
+  background: linear-gradient(135deg, #146c38 0%, #1b8a4a 100%);
+}
+
+.tp-receipt.is-pending .tp-receipt-hero {
+  background: linear-gradient(135deg, #c43e00 0%, #e65100 100%);
+}
+
+.tp-receipt.is-fail .tp-receipt-hero {
+  background: linear-gradient(135deg, #8e0e18 0%, #ed1525 100%);
+}
+
+.tp-receipt-hero .tp-badge {
+  display: inline-block;
+  padding: 0.2rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.tp-receipt-hero h2 {
+  margin: 0.65rem 0 0.25rem;
+  font-size: 1.45rem;
+}
+
+.tp-receipt-hero p {
+  margin: 0;
+  opacity: 0.9;
+  font-size: 14px;
+}
+
+.tp-rows {
+  padding: 0.4rem 0 0.6rem;
+}
+
+.tp-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0.7rem 1.35rem;
+  border-bottom: 1px solid #f0f2f5;
+  font-size: 14px;
+}
+
+.tp-row span {
+  color: var(--tilopay-text-muted);
+}
+
+.tp-row strong {
+  color: var(--tilopay-text);
+  text-align: right;
+  word-break: break-all;
+}
+
+.tp-receipt-foot {
+  padding: 1rem 1.35rem 1.3rem;
+  text-align: center;
+}
+
+.tp-receipt-foot a {
+  display: inline-block;
+  min-width: 180px;
+  padding: 0.75rem 1.1rem;
+  border-radius: 12px;
+  background: var(--tilopay-red);
+  color: #fff !important;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.tp-hint {
+  margin: 0.75rem 0 0;
+  font-size: 12px;
+  color: var(--tilopay-text-muted);
+}

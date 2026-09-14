@@ -1,5 +1,8 @@
 # Assets — imágenes
 
-Logos e iconos de la app Flutter.
+Logos e iconos de la app Flutter. Copia APEX en `APEX/assets/`.
 
-Cuando exista el wordmark / icono de producto, copiar también a `APEX/assets/` para Static Application Files.
+| Archivo | Uso |
+|---------|-----|
+| `tilopay_icon.png` | Icono T (Tilopay Demo) |
+| `tilopay_logo.svg` | Wordmark oficial Tilopay |
