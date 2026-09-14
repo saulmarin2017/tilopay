@@ -84,7 +84,10 @@ class PayApi {
       }
       return parsed;
     } catch (e) {
-      return PayInicio(error: 'ORDS: $e');
+      final snippet = res.body.length > 240 ? res.body.substring(0, 240) : res.body;
+      return PayInicio(
+        error: 'HTTP ${res.statusCode}: $e ${snippet.isEmpty ? '' : snippet}',
+      );
     }
   }
 }

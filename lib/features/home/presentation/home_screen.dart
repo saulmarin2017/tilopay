@@ -5,7 +5,7 @@ import '../../../core/config/app_config.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../data/api/pay_api.dart';
 import '../../../shared/widgets/labeled_field.dart';
-import '../../pago/presentation/pago_screen.dart';
+import '../../pago/presentation/checkout_webview.dart';
 
 /// Checkout Flutter, mismo layout que APEX p.1 (app 110).
 /// PAN no se envía por Dart: Pagar abre un resultado demo hasta el WebView.
@@ -54,44 +54,46 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _pagar() async {
-    if (_metodo.isEmpty) {
-      setState(() => _msg = 'Elegí el método de pago.');
-      return;
-    }
-    if (!_esSinpe && _numeroCtrl.text.trim().isEmpty) {
-      setState(() => _msg = 'Ingresá el número de tarjeta.');
-      return;
-    }
     setState(() {
       _msg = null;
       _busy = true;
     });
     final monto = num.tryParse(_montoCtrl.text.trim()) ?? 100;
-    final inicio = await _payApi.iniciar(
-      monto: monto,
-      email: _emailCtrl.text.trim(),
-      nombre: _nombreCtrl.text.trim(),
-      apellido: _apellidoCtrl.text.trim(),
-    );
-    if (!mounted) return;
-    setState(() => _busy = false);
-    if (!inicio.ok) {
-      setState(() => _msg = inicio.error ?? 'No se pudo iniciar el cobro.');
-      return;
-    }
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (_) => PagoScreen(
-          monto: _montoCtrl.text.trim(),
-          email: _emailCtrl.text.trim(),
-          nombre: _nombreCtrl.text.trim(),
-          apellido: _apellidoCtrl.text.trim(),
-          orderNumber: inicio.orderNumber,
-          checkoutUrl: inicio.checkoutUrl,
-          estado: 'PENDIENTE',
+    try {
+      final inicio = await _payApi.iniciar(
+        monto: monto,
+        email: _emailCtrl.text.trim(),
+        nombre: _nombreCtrl.text.trim(),
+        apellido: _apellidoCtrl.text.trim(),
+      );
+      if (!mounted) return;
+      setState(() => _busy = false);
+      if (!inicio.ok) {
+        setState(() => _msg = inicio.error ?? 'No se pudo iniciar el cobro.');
+        return;
+      }
+      final checkout = inicio.checkoutUrl ?? '';
+      final redirect = checkout.replaceFirst(RegExp(r'/home/?$'), '/callback');
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => CheckoutWebView(
+            token: inicio.token!,
+            orderNumber: inicio.orderNumber!,
+            redirect: redirect,
+            monto: _montoCtrl.text.trim(),
+            email: _emailCtrl.text.trim(),
+            nombre: _nombreCtrl.text.trim(),
+            apellido: _apellidoCtrl.text.trim(),
+          ),
         ),
-      ),
-    );
+      );
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _busy = false;
+        _msg = 'ORDS: $e';
+      });
+    }
   }
 
   @override
@@ -266,7 +268,7 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 18),
               ElevatedButton(
                 onPressed: _busy ? null : _pagar,
-                child: Text(_busy ? 'Creando orden…' : 'Pagar'),
+                child: Text(_busy ? 'Iniciando…' : 'Pagar'),
               ),
               const SizedBox(height: 10),
               const Text(

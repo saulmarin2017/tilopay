@@ -42,16 +42,39 @@ DECLARE
   l_redirect VARCHAR2(400);
   l_checkout VARCHAR2(400);
   l_monto    NUMBER;
+  l_moneda   VARCHAR2(3);
+  l_email    VARCHAR2(200);
+  l_nombre   VARCHAR2(80);
+  l_apellido VARCHAR2(80);
+  l_json     JSON_OBJECT_T;
+  l_payload  CLOB;
   l_out      CLOB;
   l_off      INTEGER := 1;
   l_len      INTEGER;
 BEGIN
+  l_payload := :body_text;
+  IF l_payload IS NULL OR NVL(DBMS_LOB.getlength(l_payload), 0) = 0 THEN
+    l_json := JSON_OBJECT_T();
+  ELSE
+    l_json := JSON_OBJECT_T.parse(l_payload);
+  END IF;
+
   BEGIN
-    l_monto := TO_NUMBER(REPLACE(NVL(:monto, '100'), ',', '.'));
+    l_monto := NVL(l_json.get_number('monto'), 100);
   EXCEPTION
     WHEN OTHERS THEN
-      l_monto := 100;
+      BEGIN
+        l_monto := TO_NUMBER(REPLACE(NVL(l_json.get_string('monto'), '100'), ',', '.'));
+      EXCEPTION
+        WHEN OTHERS THEN
+          l_monto := 100;
+      END;
   END;
+
+  l_moneda   := NVL(l_json.get_string('moneda'), 'CRC');
+  l_email    := NVL(l_json.get_string('email'), 'prueba@navasoftsoluciones.com');
+  l_nombre   := NVL(l_json.get_string('nombre'), 'Saul');
+  l_apellido := NVL(l_json.get_string('apellido'), 'Marin');
 
   l_host := NVL(owa_util.get_cgi_env('X-Forwarded-Host'),
             NVL(owa_util.get_cgi_env('HTTP_HOST'), ''));
@@ -62,10 +85,10 @@ BEGIN
   ns_pay_tilopay.iniciar(
     p_ambiente     => 'SANDBOX',
     p_monto        => l_monto,
-    p_moneda       => NVL(:moneda, 'CRC'),
-    p_email        => NVL(:email, 'prueba@navasoftsoluciones.com'),
-    p_nombre       => NVL(:nombre, 'Saul'),
-    p_apellido     => NVL(:apellido, 'Marin'),
+    p_moneda       => l_moneda,
+    p_email        => l_email,
+    p_nombre       => l_nombre,
+    p_apellido     => l_apellido,
     p_url_redirect => l_redirect,
     p_app_id       => 110,
     p_workspace    => 'WKSP_PRUEBAS',

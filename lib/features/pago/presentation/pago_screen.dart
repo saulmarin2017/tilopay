@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../../core/config/app_config.dart';
 import '../../../core/theme/app_colors.dart';
@@ -14,6 +15,7 @@ class PagoScreen extends StatelessWidget {
     this.apellido = '',
     this.orderNumber,
     this.checkoutUrl,
+    this.token,
     this.estado = 'PENDIENTE',
     this.authCode,
     this.code,
@@ -27,6 +29,7 @@ class PagoScreen extends StatelessWidget {
   final String apellido;
   final String? orderNumber;
   final String? checkoutUrl;
+  final String? token;
   final String estado;
   final String? authCode;
   final String? code;
@@ -111,6 +114,7 @@ class PagoScreen extends StatelessWidget {
                 ),
                 _row('Monto', '₡ $monto'),
                 _row('Orden', orderNumber ?? '—'),
+                if (token != null && token!.isNotEmpty) _tokenBlock(context),
                 if (authCode != null) _row('Autorización', authCode!),
                 if (code != null) _row('Código', code!),
                 if (descripcion != null) _row('Descripción', descripcion!),
@@ -129,6 +133,46 @@ class PagoScreen extends StatelessWidget {
                   ),
                 ),
               ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _tokenBlock(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.fromLTRB(20, 12, 20, 16),
+      decoration: const BoxDecoration(
+        border: Border(bottom: BorderSide(color: Color(0xFFF0F2F5))),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Text('Token', style: TextStyle(color: AppColors.textSecondary)),
+              const Spacer(),
+              TextButton(
+                onPressed: () async {
+                  await Clipboard.setData(ClipboardData(text: token!));
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Token copiado')),
+                    );
+                  }
+                },
+                child: const Text('Copiar'),
+              ),
+            ],
+          ),
+          SelectableText(
+            token!,
+            style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color: AppColors.textPrimary,
             ),
           ),
         ],

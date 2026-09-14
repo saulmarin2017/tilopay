@@ -36,6 +36,8 @@ dependencies:
   cupertino_icons: ^1.0.8
   http: ^1.4.0
   webview_flutter: ^4.13.0
+  webview_flutter_android: ^4.10.11
+  webview_flutter_wkwebview: ^3.23.6
   flutter_secure_storage: ^9.2.4
 
 dev_dependencies:
@@ -62,6 +64,7 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/tilopay/
 
   # To add assets to your application, add an assets section, like this:
   # assets:
