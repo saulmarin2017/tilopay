@@ -1,12 +1,42 @@
-/* Page 3 Execute when Page Loads — app 110. Ítems P3_*. No pintar token. */
+/* Page 3 Execute when Page Loads. No hace falta Hidden en cada ítem. */
 (function () {
-  var code = ($v("P3_CODE") || "").trim();
-  var estado = ($v("P3_ESTADO") || "").trim();
-  var err = ($v("P3_ERROR") || "").trim();
+  function val() {
+    for (var i = 0; i < arguments.length; i += 1) {
+      var v = $v(arguments[i]);
+      if (v && String(v).trim() && String(v).indexOf("&") !== 0) return String(v).trim();
+    }
+    return "";
+  }
+
+  function setText(id, text) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    var row = el.closest ? el.closest(".tp-row") : el.parentElement;
+    if (!text) {
+      if (row && row.classList && row.classList.contains("tp-row")) row.style.display = "none";
+      else el.textContent = "";
+      return;
+    }
+    el.textContent = text;
+  }
+
+  var code = val("P3_CODE", "CODE");
+  var estado = val("P3_ESTADO");
+  var err = val("ERROR", "P3_ERROR");
   var box = document.getElementById("tp_receipt");
   var title = document.getElementById("tp_receipt_title");
   var sub = document.getElementById("tp_receipt_sub");
   if (!box) return;
+
+  setText("tp_r_order", val("P3_ORDER", "ORDER"));
+  setText("tp_r_auth", val("P3_AUTH", "AUTH"));
+  setText("tp_r_code", code);
+  setText("tp_r_desc", val("P3_DESC", "DESCRIPTION"));
+  setText("tp_r_brand", val("BRAND"));
+  setText("tp_r_estado", estado);
+
+  var errEl = document.getElementById("tp_r_error");
+  if (errEl) errEl.textContent = err;
 
   box.classList.remove("is-ok", "is-pending", "is-fail");
 

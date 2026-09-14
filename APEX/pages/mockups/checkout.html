@@ -63,8 +63,11 @@
     .amount .lbl { font-size: 12px; color: var(--muted); font-weight: 600; }
     .amount strong { display: block; font-size: 1.85rem; letter-spacing: -.03em; margin: 2px 0 4px; }
     .amount small { color: var(--muted); font-size: 12px; }
-    form { padding: 1.1rem 1.35rem 0.4rem; display: flex; flex-direction: column; gap: 0.35rem; }
-    label { font-size: 13px; font-weight: 600; margin-top: 0.55rem; }
+    form { padding: 1.1rem 1.35rem 0.4rem; display: flex; flex-direction: column; gap: 0.85rem; }
+    .tp-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 16px; }
+    .tp-row-vence { grid-template-columns: 1.4fr 0.8fr; }
+    .tp-field { display: flex; flex-direction: column; gap: 0.35rem; min-width: 0; }
+    label { font-size: 13px; font-weight: 600; margin: 0; }
     input, select {
       width: 100%; min-height: 44px; border: 1px solid #e0e0e0; border-radius: 10px; padding: 0 12px; font-size: 15px;
     }
@@ -106,20 +109,34 @@
             <strong>₡ 100.00</strong>
             <small>Orden NS-20260911-00000034 · CRC</small>
           </div>
-          <form action="callback.html">
-            <label>Método de pago</label>
-            <select>
-              <option>Tarjeta de crédito o débito</option>
-              <option>SINPE Móvil</option>
-            </select>
-            <label>Tarjetas guardadas</label>
-            <select><option>Nueva tarjeta</option></select>
-            <label>Número</label>
-            <input value="4111111111111111" autocomplete="off" />
-            <label>Vence (MM/AA)</label>
-            <input value="12/28" />
-            <label>CVV</label>
-            <input type="password" value="123" autocomplete="off" />
+          <form class="payFormTilopay" action="callback.html">
+            <div class="tp-row-2">
+              <div class="tp-field">
+                <label>Método de pago</label>
+                <select>
+                  <option>Tarjeta de crédito o débito</option>
+                  <option>SINPE Móvil</option>
+                </select>
+              </div>
+              <div class="tp-field">
+                <label>Tarjetas guardadas</label>
+                <select><option>Nueva tarjeta</option></select>
+              </div>
+            </div>
+            <div class="tp-field">
+              <label>Número</label>
+              <input value="4111111111111111" autocomplete="off" />
+            </div>
+            <div class="tp-row-2 tp-row-vence">
+              <div class="tp-field">
+                <label>Vence (MM/AA)</label>
+                <input value="12/28" />
+              </div>
+              <div class="tp-field">
+                <label>CVV</label>
+                <input type="password" value="123" autocomplete="off" />
+              </div>
+            </div>
             <button class="pay" type="submit">Pagar</button>
             <button class="sinpe" type="button">Ver datos SINPE</button>
           </form>

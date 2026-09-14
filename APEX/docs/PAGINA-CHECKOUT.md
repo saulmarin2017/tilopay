@@ -130,7 +130,7 @@ Session State Protection **Unrestricted**. Nombres **sin** `P3_`:
 
 ### Page Items (página 3, Display Only)
 
-`P3_ORDER` `P3_CODE` `P3_AUTH` `P3_DESC` `P3_ESTADO` `P3_ERROR`
+`P3_ORDER` `P3_CODE` `P3_AUTH` `P3_DESC` `P3_ESTADO` `ERROR` (el ítem de error en app 110 se llama `ERROR`, no `P3_ERROR`)
 
 ### Before Header página 3
 
@@ -183,9 +183,9 @@ begin
       p_error        => l_err
     );
     :P3_ESTADO := l_est;
-    :P3_ERROR  := l_err;
+    :ERROR     := l_err;
   else
-    :P3_ERROR := 'Sin order en la URL';
+    :ERROR := 'Sin order en la URL';
   end if;
 end;
 ```

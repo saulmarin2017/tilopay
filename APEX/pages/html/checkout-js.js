@@ -99,6 +99,8 @@
         var isYappy = parts[1] === "18";
         document.getElementById("tlpy_card_payment_div").style.display = isYappy ? "none" : "block";
         document.getElementById("tlpy_phone_number_div").style.display = isYappy ? "block" : "none";
+        var saved = document.getElementById("tlpy_saved_wrap");
+        if (saved) saved.style.display = isYappy ? "none" : "";
       };
     }
 

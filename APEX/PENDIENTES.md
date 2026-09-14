@@ -12,10 +12,11 @@ Este archivo es el **seguimiento de la app web**; no duplicar el detalle en `doc
 
 ## Orden de trabajo actual
 
-1. **A6** — Export `f110.sql` a `exports/app/`
-2. **A10** — Ocultar token e ítems extra en callback
-3. **A11** — HMAC `OrderHash` → estado `PAGADO` (bloqueado: falta secreto Tilopay)
-4. **A12** — Página de pago pública **o** ORDS `/pay/iniciar` para Flutter
+1. **A7 / A9** — Pegar `app_tilopay.css` en Theme Custom CSS (P1 + P3)
+2. **A10** — Pegar HTML/JS callback; ítems Hidden
+3. **A6** — Export `f110.sql` a `exports/app/`
+4. **A11** — HMAC `OrderHash` → estado `PAGADO` (bloqueado: falta secreto Tilopay)
+5. **A12** — Página de pago pública **o** ORDS `/pay/iniciar` para Flutter
 
 ---
 

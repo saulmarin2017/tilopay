@@ -2,15 +2,14 @@
    Tilopay Demo — Shell APEX (barra horizontal + menú lateral + checkout)
    Paleta: carmesí Tilopay #ED1525
 
-   Cómo aplicar:
-   1. Shared Components → Static Application Files → Create
-      - File: app_tilopay.css  (esta carpeta: APEX/shared/css/)
-   2. Shared Components → User Interface → Themes → [Theme activo]
-      → CSS File URLs:
-        #APP_FILES#app_tilopay.css
-   3. Save + hard refresh (Ctrl+F5)
+   Cómo aplicar (rápido, igual que el login):
+   Shared Components → Themes → [Theme] → Custom CSS
+   Pegar este archivo completo. Save + Ctrl+F5. Verificar en página 1.
 
-   No reemplaza el CSS del login (login_tilopay.css en página 9999).
+   Alternativa: Static File app_tilopay.css + Theme CSS File URLs
+     #APP_FILES#app_tilopay.css
+
+   NO pegar login_tilopay.css aquí. Este CSS excluye .t-PageBody--login.
    ============================================================================= */
 
 :root {
@@ -37,6 +36,13 @@
   --ut-header-background-color: #b0101c;
   --ut-header-text-color: #ffffff;
   --ut-body-background-color: #f5f7fa;
+  --a-nav-list-selected-background-color: #ed1525;
+  --ut-link-text-color: #ed1525;
+}
+
+/* No pintar el contenido gris sobre el login (gradiente rojo de P9999). */
+body:not(.t-PageBody--login) {
+  background-color: var(--tilopay-surface) !important;
 }
 
 /* =============================================================================
@@ -214,11 +220,114 @@ aside.t-Body-nav {
    CONTENIDO
    ============================================================================= */
 
-.t-Body-main,
-.t-Body-content,
-.t-Body-contentInner,
-#t_Body_content {
+body:not(.t-PageBody--login) .t-Body-main,
+body:not(.t-PageBody--login) .t-Body-content,
+body:not(.t-PageBody--login) .t-Body-contentInner,
+body:not(.t-PageBody--login) #t_Body_content {
   background-color: var(--tilopay-surface) !important;
+}
+
+/* =============================================================================
+   REGIONES, FORMS, LINKS, FOOTER (todas las páginas post-login)
+   ============================================================================= */
+
+.t-Region,
+.t-Region-body {
+  background-color: transparent;
+}
+
+.t-Region > .t-Region-header,
+.t-Region-headerItems--title .t-Region-title,
+.t-Region-headerText {
+  color: var(--tilopay-red-dark) !important;
+}
+
+.t-Region-header {
+  border-bottom-color: #ffd6d9 !important;
+}
+
+.t-Form-label,
+.t-Form-item .t-Form-label {
+  color: var(--tilopay-text) !important;
+}
+
+.t-Form-fieldContainer input.apex-item-text,
+.t-Form-fieldContainer input[type="text"],
+.t-Form-fieldContainer input[type="number"],
+.t-Form-fieldContainer input[type="password"],
+.t-Form-fieldContainer textarea,
+.t-Form-fieldContainer select,
+.apex-item-select,
+.apex-item-text {
+  border-radius: 8px !important;
+}
+
+.t-Form-fieldContainer input:focus,
+.t-Form-fieldContainer textarea:focus,
+.t-Form-fieldContainer select:focus,
+.apex-item-text:focus,
+.apex-item-select:focus {
+  border-color: var(--tilopay-red) !important;
+  box-shadow: 0 0 0 2px rgba(237, 21, 37, 0.18) !important;
+  outline: none !important;
+}
+
+.t-Body-content a,
+.t-Body-contentInner a {
+  color: var(--tilopay-red);
+}
+
+.t-Body-content a:hover {
+  color: var(--tilopay-red-dark);
+}
+
+.t-Button--primary,
+button.t-Button--primary {
+  background-color: var(--tilopay-red) !important;
+  background-image: none !important;
+  border-color: var(--tilopay-red) !important;
+  color: #fff !important;
+}
+
+.t-Alert--success,
+.t-Alert--success .t-Alert-title {
+  border-color: #1b8a4a;
+}
+
+.t-Alert--danger,
+.t-Alert--warning {
+  border-color: var(--tilopay-red);
+}
+
+.t-Footer,
+footer.t-Footer {
+  background: #fff !important;
+  border-top: 1px solid #ffd6d9 !important;
+  color: var(--tilopay-text-muted) !important;
+}
+
+.t-Header-nav,
+.t-Header .a-MenuBar,
+.t-Header .a-MenuBar-item,
+.t-Header .a-MenuBar-label {
+  background-color: transparent !important;
+  color: #fff !important;
+}
+
+.t-Header .a-MenuBar-item.is-current,
+.t-Header .a-MenuBar-item:hover,
+.t-Header-nav .a-Menu--current {
+  background-color: var(--tilopay-red) !important;
+}
+
+.t-Breadcrumb-item a,
+.t-Breadcrumb-label {
+  color: var(--tilopay-text-muted) !important;
+}
+
+.t-Breadcrumb-item.is-active .t-Breadcrumb-label {
+  color: var(--tilopay-red-dark) !important;
+  font-weight: 600 !important;
 }
 
 .t-Body-title,
@@ -371,17 +480,35 @@ table.a-GV-table thead th,
 }
 
 .payFormTilopay {
-  padding: 1.1rem 1.35rem 0.4rem;
+  padding: 0.4rem 0 0.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.tp-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 16px;
+  align-items: end;
+}
+
+.tp-row-vence {
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.8fr);
+}
+
+.tp-field {
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
+  min-width: 0;
 }
 
 .payFormTilopay label {
   font-size: 13px;
   font-weight: 600;
   color: var(--tilopay-text);
-  margin-top: 0.55rem;
+  margin: 0;
 }
 
 .payFormTilopay input,
@@ -395,6 +522,13 @@ table.a-GV-table thead th,
   font-size: 15px;
   background: #fff;
   color: var(--tilopay-text);
+}
+
+@media (max-width: 640px) {
+  .tp-row-2,
+  .tp-row-vence {
+    grid-template-columns: 1fr;
+  }
 }
 
 .payFormTilopay input:focus,
@@ -446,7 +580,7 @@ table.a-GV-table thead th,
 }
 
 #tilopay_msg {
-  margin: 0 1.35rem 0.2rem;
+  margin: 0 0 0.6rem;
   min-height: 1.2em;
   font-size: 13px;
   color: var(--tilopay-text-muted);
@@ -560,4 +694,20 @@ table.a-GV-table thead th,
   margin: 0.75rem 0 0;
   font-size: 12px;
   color: var(--tilopay-text-muted);
+}
+
+.tp-hint:empty {
+  display: none;
+}
+
+/* P3: tapar el listado de ítems APEX. Los ítems siguen en sesión (Friendly URL).
+   Page 3 → CSS Classes = tp-callback-page */
+body.tp-callback-page .t-BreadcrumbRegion,
+body.tp-callback-page .t-Form-fieldContainer,
+body.tp-callback-page .t-Region:has(.t-Form-fieldContainer) {
+  display: none !important;
+}
+
+body.tp-callback-page .t-Body-contentInner {
+  padding-top: 1.5rem;
 }
